@@ -6,12 +6,13 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:36:07 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/24 14:42:33 by darbib           ###   ########.fr       */
+/*   Updated: 2021/02/24 15:50:24 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
+#include "philo_one.h"
 
 void	ft_putnbr_fd(int n, int fd)
 {

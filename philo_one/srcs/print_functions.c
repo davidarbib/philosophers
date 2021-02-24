@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/24 14:19:49 by darbib           ###   ########.fr       */
+/*   Updated: 2021/02/24 15:51:02 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_fork_taken(int timestamp, int philo_id)
 void	print_eating(int timestamp, int philo_id)
 {
 	ft_putnbr_fd(timestamp, 1);
-	write(1, " ", 1);stdlib
+	write(1, " ", 1);
 	ft_putnbr_fd(philo_id, 1);
 	write(1, " is eating\n", 11);
 }
