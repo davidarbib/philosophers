@@ -1,0 +1,9 @@
+**/*.out
+**/.*.sw*
+**/objs
+**/*.o
+**/*.a
+**/.clangd
+**/*.tmp
+**/*.gch
+minishell
