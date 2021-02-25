@@ -19,5 +19,6 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_atoi(const char *str);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isdigit(int c);
+size_t	ft_strlen(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/24 15:55:17 by darbib           ###   ########.fr       */
+/*   Updated: 2021/02/25 13:48:14 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@
 int check_arg(char *arg) 
 {
 	int i;
+	int len;
 
 	i = 0;
 	while (arg[i] && ft_isdigit(arg[i]))
 		i++;
 	if (arg[i])
 		return (0);
-	if (ft_strcmp(arg, "2147483647") > 0)
+	len = ft_strlen(arg);
+	if (len > 10)
+		return (0);
+	if (len == 10 && ft_strcmp(arg, "2147483647") > 0)
 		return (0);
 	return (1);
 }
@@ -34,7 +38,7 @@ int	parse_args(int ac, char **av, t_philo *param)
 	int		i;
 	int		success;
 	
-	i = 0;
+	i = 1;
 	success = 1;
 	while (i < ac)
 		success *= check_arg(av[i++]);

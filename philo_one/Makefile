@@ -6,7 +6,7 @@
 #    By: darbib <darbib@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/03 12:23:24 by darbib            #+#    #+#              #
-#    Updated: 2021/02/24 15:51:39 by darbib           ###   ########.fr        #
+#    Updated: 2021/02/25 13:36:46 by darbib           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ all : $(NAME)
 bonus : $(NAME)
 
 $(NAME): $(OBJ) $(LIB_LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJ) -o $@
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@mkdir -p objs
@@ -70,15 +70,11 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 clean :
 	@echo $(MAGENTA) "Cleaning objs..." $(RESET)
 	@rm -rf $(OBJ_DIR)
-	@rm -f $(LIBS)
-	@make clean -C $(LIBFT_DIR)
 	@echo $(MAGENTA) "...done" $(RESET)
 
 fclean : clean
 	@echo $(MAGENTA) "Total cleaning..." $(RESET)
 	@rm -f $(NAME)
 	@echo $(MAGENTA) "...done" $(RESET)
-
-test: 
 
 re : fclean all
