@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/25 13:48:14 by darbib           ###   ########.fr       */
+/*   Updated: 2021/02/26 15:50:26 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,31 @@
 #include "philo_one.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+int	create_philo_table(int number_of_philosophers, t_philo **table)
+{
+	t_philo	*node;
+	t_philo	*head;
+
+	head = (t_philo *)malloc(sizeof(t_philo));
+	if (!head)
+		return (1);
+	node = head;
+	number_of_philosophers--;
+	while (number_of_philosophers > 0)
+	{
+		node->next = (t_philo *)malloc(sizeof(t_philo));
+		if (!node)
+			return (1);
+		node->id = number_of_philosophers;
+		node->state = thinking;
+		number_of_philosophers--;
+		node = node->next;
+	}
+	node->next = head;
+	*table = head;
+	return (0);
+}
 
 int check_arg(char *arg) 
 {
@@ -33,7 +58,7 @@ int check_arg(char *arg)
 	return (1);
 }
 
-int	parse_args(int ac, char **av, t_philo *param)
+int	parse_args(int ac, char **av, t_param *param)
 {
 	int		i;
 	int		success;
@@ -55,9 +80,24 @@ int	parse_args(int ac, char **av, t_philo *param)
 	return (0);
 }
 
+void	*live(void *place)
+{
+	t_philo *philo_place;
+
+	philo_place = (t_philo *)place;
+	pthread_mutex_lock(&philo_place->fork);	
+	pthread_mutex_lock(&philo_place->fork);	
+	printf("philo %d takes his fork\n", philo_place->id);
+	//pthread_mutex_lock(&philo_place->next->fork);	
+	//printf("philo %d takes his neihgbour fork\n", philo_place->id);
+	pthread_mutex_unlock(&philo_place->fork);
+	return (NULL);
+}
+
 int main(int ac, char **av)
 {
-	t_philo	param;
+	t_param	param;
+	t_philo	*table;
 
 	if (ac < 5 || ac > 6)
 	{
@@ -79,5 +119,16 @@ int main(int ac, char **av)
 	print_sleeping(10, 2);
 	print_thinking(10, 2);
 	print_died(10, 2);
+	create_philo_table(param.number_of_philosophers, &table);
+	t_philo *place = table;
+	while (1)
+	{
+		printf("philo id : %d\n", place->id);
+		pthread_create(&place->philo, NULL, live, place);
+		pthread_detach(place->philo);
+		place = place->next;
+		if (place == table)
+			break;
+	}
 	return (0);
 }
