@@ -6,4 +6,4 @@
 **/.clangd
 **/*.tmp
 **/*.gch
-minishell
+**/philo_*
