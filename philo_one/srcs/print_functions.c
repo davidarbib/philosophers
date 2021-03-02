@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/24 15:51:02 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/02 15:56:58 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,12 @@ void	print_died(int timestamp, int philo_id)
 	write(1, " ", 1);
 	ft_putnbr_fd(philo_id, 1);
 	write(1, " died\n", 6);
+}
+
+void	print_state(t_philo *place, char *message, int timestamp)
+{
+	ft_putnbr_fd(timestamp, 1);
+	write(1, " ", 1);
+	ft_putnbr_fd(philo_id, 1);
+	if (
 }

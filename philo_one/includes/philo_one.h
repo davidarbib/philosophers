@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/26 15:50:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/02 14:59:08 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ enum				e_philo
 {
 	thinking,
 	eating,
-	sleeping
+	fork_taking,
+	sleeping,
+	dying
 };
 
 typedef struct		s_philo

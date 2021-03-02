@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/26 15:50:26 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/02 14:31:50 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	*live(void *place)
 
 	philo_place = (t_philo *)place;
 	pthread_mutex_lock(&philo_place->fork);	
-	pthread_mutex_lock(&philo_place->fork);	
 	printf("philo %d takes his fork\n", philo_place->id);
 	//pthread_mutex_lock(&philo_place->next->fork);	
 	//printf("philo %d takes his neihgbour fork\n", philo_place->id);
@@ -125,7 +124,14 @@ int main(int ac, char **av)
 	{
 		printf("philo id : %d\n", place->id);
 		pthread_create(&place->philo, NULL, live, place);
-		pthread_detach(place->philo);
+		pthread_mutex_init(&place->fork, NULL);
+		place = place->next;
+		if (place == table)
+			break;
+	}
+	while (1)
+	{
+		pthread_join(place->philo, NULL);
 		place = place->next;
 		if (place == table)
 			break;
