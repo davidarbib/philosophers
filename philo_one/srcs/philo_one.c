@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/03 15:45:58 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:40:08 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,32 +80,71 @@ int	parse_args(int ac, char **av, t_param *param)
 	return (0);
 }
 
-void	*live(void *place)
+void	*live(void *pack_in)
 {
-	t_philo *philo_place;
+	t_philo *philo;
+	t_param *param;
+	t_pack	*pack;
 
-	philo_place = (t_philo *)place;
-	pthread_mutex_lock(&philo_place->fork);	
-	printf("philo %d takes his fork\n", philo_place->id);
-	pthread_mutex_unlock(&philo_place->fork);
-	/*
+	pack = (t_pack *)pack_in;
+	philo = pack->philo;
+	param = pack->param;
+	//pthread_mutex_lock(&philo_place->fork);	
+	//printf("philo %d takes his fork\n", philo_place->id);
+	//pthread_mutex_unlock(&philo_place->fork);
 	while (1)
 	{
-		take_his_fork();
-		take_left_fork();
-		eat();
-		sleep();
-		think();
+		print_state(philo);
+		pack->philo_actions[philo->state](philo, param);
+		philo->state++;
+		if (philo->state == STATE_NB)
+			philo->state = 0;
 	}
-	*/
 	return (NULL);
+}
+
+void	init_ft_array(void (*philo_actions[STATE_NB])(t_philo *philo, 
+														t_param *param))
+{
+	philo_actions[left_fork_taking] = take_left_fork;
+	philo_actions[right_fork_taking] = take_his_fork;
+	philo_actions[eating] = philo_eat;
+	philo_actions[sleeping] = philo_sleep;
+	philo_actions[thinking] = philo_think;
+}
+
+void	simulate_philo_table(t_pack *sim_pack)
+{
+	t_philo *philo;
+	t_philo *head;
+
+	head = sim_pack->philo;
+	philo = sim_pack->philo;
+	while (1)
+	{
+		//printf("philo id : %d\n", place->id);
+		sim_pack->philo = philo;
+		pthread_create(&philo->soul, NULL, live, sim_pack);
+		pthread_mutex_init(&philo->fork, NULL);
+		philo = philo->next;
+		if (philo == head)
+			break;
+	}
+	while (1)
+	{
+		pthread_join(philo->soul, NULL);
+		philo = philo->next;
+		if (philo == head)
+			break;
+	}
 }
 
 int main(int ac, char **av)
 {
 	t_param	param;
 	t_philo	*table;
-
+	t_pack	pack;
+	
 	if (ac < 5 || ac > 6)
 	{
 		write(2, "Error arguments\n", 16);
@@ -116,29 +155,10 @@ int main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
-	printf("time : %lu\n", get_usec_from_epoch());
-	printf("number_of_philosophers = %d\n", param.number_of_philosophers);
-	printf("time_to_die = %d\n", param.time_to_die);
-	printf("time_to_eat = %d\n", param.time_to_eat);
-	printf("time_to_sleep = %d\n", param.time_to_sleep);
-	printf("nb times eat = %d\n", param.number_of_times_each_philosophers_must_eat);
 	create_philo_table(param.number_of_philosophers, &table);
-	t_philo *place = table;
-	while (1)
-	{
-		printf("philo id : %d\n", place->id);
-		pthread_create(&place->philo, NULL, live, place);
-		pthread_mutex_init(&place->fork, NULL);
-		place = place->next;
-		if (place == table)
-			break;
-	}
-	while (1)
-	{
-		pthread_join(place->philo, NULL);
-		place = place->next;
-		if (place == table)
-			break;
-	}
+	init_ft_array(pack.philo_actions);
+	pack.philo = table;
+	pack.param = &param;
+	simulate_philo_table(&pack);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: darbib <darbib@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/03 12:23:24 by darbib            #+#    #+#              #
-#    Updated: 2021/03/03 15:32:35 by darbib           ###   ########.fr        #
+#    Updated: 2021/03/04 00:25:00 by darbib           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ MAGENTA = 	'\033[0;35m'
 RESET = 	'\033[0m'
 
 NAME = philo_one
-CFLAGS= -Wall -Wextra -Werror 
+CFLAGS= -Wall -Wextra -Werror  
 CC = clang
+LIBS = -pthread
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -g3
@@ -46,10 +47,9 @@ INC = $(addprefix -I, $(INC_DIRS))
 
 SRC = philo_one.c \
 	  tools.c \
-	  print_functions.c \
+	  print.c \
 	  time_tools.c \
 	  actions.c \
-	  print.c \
 
 # ------------------------------------------------------------------------------
 
@@ -63,8 +63,8 @@ all : $(NAME)
 
 bonus : $(NAME)
 
-$(NAME): $(OBJ) $(LIB_LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) -o $@
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $@ 
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@mkdir -p objs
