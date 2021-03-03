@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/02 14:31:50 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/02 20:03:42 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ void	*live(void *place)
 	philo_place = (t_philo *)place;
 	pthread_mutex_lock(&philo_place->fork);	
 	printf("philo %d takes his fork\n", philo_place->id);
-	//pthread_mutex_lock(&philo_place->next->fork);	
-	//printf("philo %d takes his neihgbour fork\n", philo_place->id);
 	pthread_mutex_unlock(&philo_place->fork);
 	return (NULL);
 }
@@ -113,11 +111,6 @@ int main(int ac, char **av)
 	printf("time_to_eat = %d\n", param.time_to_eat);
 	printf("time_to_sleep = %d\n", param.time_to_sleep);
 	printf("nb times eat = %d\n", param.number_of_times_each_philosophers_must_eat);
-	print_fork_taken(10, 2);
-	print_eating(10, 2);
-	print_sleeping(10, 2);
-	print_thinking(10, 2);
-	print_died(10, 2);
 	create_philo_table(param.number_of_philosophers, &table);
 	t_philo *place = table;
 	while (1)

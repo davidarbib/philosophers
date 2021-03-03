@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/02 14:59:08 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/02 20:47:27 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ enum				e_philo
 	eating,
 	fork_taking,
 	sleeping,
-	dying
+	dead
 };
 
 typedef struct		s_philo
@@ -44,15 +44,12 @@ typedef struct		s_philo
 	struct s_philo	*next;
 }					t_philo;
 
-void				print_died(int timestamp, int philo_id);
-void				print_fork_taken(int timestamp, int philo_id);
-void				print_eating(int timestamp, int philo_id);
-void				print_sleeping(int timestamp, int philo_id);
-void				print_thinking(int timestamp, int philo_id);
-void				ft_putnbr_fd(int n, int fd);
+void				print_state(t_philo *philo);
+void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
+long				get_usec_from_epoch();
 
 #endif

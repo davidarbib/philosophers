@@ -6,4 +6,3 @@
 **/.clangd
 **/*.tmp
 **/*.gch
-**/philo_*

@@ -1,0 +1,47 @@
+[
+ {
+  "directory": "/home/daav/philosophers/philo_one",
+  "arguments": [
+   "clang",
+   "-Iincludes",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-c",
+   "srcs/philo_one.c",
+   "-o",
+   "objs/philo_one.o"
+  ],
+  "file": "srcs/philo_one.c"
+ },
+ {
+  "directory": "/home/daav/philosophers/philo_one",
+  "arguments": [
+   "clang",
+   "-Iincludes",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-c",
+   "srcs/tools.c",
+   "-o",
+   "objs/tools.o"
+  ],
+  "file": "srcs/tools.c"
+ },
+ {
+  "directory": "/home/daav/philosophers/philo_one",
+  "arguments": [
+   "clang",
+   "-Iincludes",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-c",
+   "srcs/print_functions.c",
+   "-o",
+   "objs/print_functions.o"
+  ],
+  "file": "srcs/print_functions.c"
+ }
+]
