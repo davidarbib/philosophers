@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/02 20:47:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/03 15:24:05 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ typedef pthread_mutex_t	t_mutex;
 
 enum				e_philo
 {
-	thinking,
+	left_fork_taking,
+	right_fork_taking,
 	eating,
-	fork_taking,
 	sleeping,
+	thinking,
 	dead
 };
 
@@ -51,5 +52,10 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
 long				get_usec_from_epoch();
+void				take_his_fork(t_philo *philo);
+void				philo_eat(t_philo *place);
+void				take_left_fork(t_philo *philo);
+void				philo_sleep(t_philo *philo);
+void				philo_think(t_philo *philo);
 
 #endif

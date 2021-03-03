@@ -6,7 +6,7 @@
 #    By: darbib <darbib@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/03 12:23:24 by darbib            #+#    #+#              #
-#    Updated: 2021/02/25 13:36:46 by darbib           ###   ########.fr        #
+#    Updated: 2021/03/03 15:32:35 by darbib           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,9 @@ INC = $(addprefix -I, $(INC_DIRS))
 SRC = philo_one.c \
 	  tools.c \
 	  print_functions.c \
+	  time_tools.c \
+	  actions.c \
+	  print.c \
 
 # ------------------------------------------------------------------------------
 

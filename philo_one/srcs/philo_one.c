@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/02 20:03:42 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/03 15:45:58 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,16 @@ void	*live(void *place)
 	pthread_mutex_lock(&philo_place->fork);	
 	printf("philo %d takes his fork\n", philo_place->id);
 	pthread_mutex_unlock(&philo_place->fork);
+	/*
+	while (1)
+	{
+		take_his_fork();
+		take_left_fork();
+		eat();
+		sleep();
+		think();
+	}
+	*/
 	return (NULL);
 }
 
@@ -106,6 +116,7 @@ int main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
+	printf("time : %lu\n", get_usec_from_epoch());
 	printf("number_of_philosophers = %d\n", param.number_of_philosophers);
 	printf("time_to_die = %d\n", param.time_to_die);
 	printf("time_to_eat = %d\n", param.time_to_eat);
