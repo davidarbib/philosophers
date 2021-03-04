@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:36:07 by darbib            #+#    #+#             */
-/*   Updated: 2021/02/25 13:52:12 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/03 23:58:51 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <unistd.h>
 #include "philo_one.h"
 
-void	ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(long n, int fd)
 {
-	char	s_nb[12];
+	char	s_nb[22];
 	char	sign;
 	size_t	i;
 	char	tmp;
@@ -24,8 +24,8 @@ void	ft_putnbr_fd(int n, int fd)
 	sign = 0;
 	if (n < 0)
 		sign = 1;
-	s_nb[11] = 0;
-	i = 10;
+	s_nb[21] = 0;
+	i = 20;
 	if (n == 0)
 		s_nb[i--] = '0';
 	while ((n >= 1 && n > 0) || (n <= -1 && n < 0))
@@ -39,7 +39,7 @@ void	ft_putnbr_fd(int n, int fd)
 	}
 	if (sign)
 		s_nb[i--] = '-';
-	write(fd, s_nb + i + 1, 10 - i);
+	write(fd, s_nb + i + 1, 20 - i);
 }
 
 int		ft_atoi(const char *str)
