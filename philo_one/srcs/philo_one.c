@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/04 15:48:59 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:39:12 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	*live(void *pack_in)
 	//pthread_mutex_unlock(&philo_place->fork);
 	while (1)
 	{
-		print_state(philo);
+		print_state(philo, &pack->prompt_mutex);
 		pack->philo_actions[philo->state](philo, param);
 		philo->state++;
 		if (philo->state == STATE_NB)
@@ -122,7 +122,6 @@ void	simulate_philo_table(t_pack *sim_pack)
 	philo = sim_pack->philo;
 	while (1)
 	{
-		//printf("philo id : %d\n", place->id);
 		sim_pack->philo = philo;
 		pthread_create(&philo->soul, NULL, live, sim_pack);
 		pthread_mutex_init(&philo->fork, NULL);
@@ -159,6 +158,7 @@ int main(int ac, char **av)
 	init_ft_array(pack.philo_actions);
 	pack.philo = table;
 	pack.param = &param;
+	pthread_mutex_init(&pack.prompt_mutex, NULL);
 	simulate_philo_table(&pack);
 	return (0);
 }

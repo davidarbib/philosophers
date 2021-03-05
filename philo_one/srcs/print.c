@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/04 16:03:55 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:17:25 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,35 +75,34 @@ int main()
 }
 */
 
-void	concatenate_philo_message(t_philo *philo, char *message)
+void	concatenate_philo_message(t_philo *philo)
 {
 	int		timestamp_usec;
 	int		count;	
 
-	memset(message, 0, 50);
+	memset(philo->message, 0, MESSAGE_LEN);
 	timestamp_usec = get_usec_from_epoch();
-	count = ft_ltobuffer(timestamp_usec, message);	
-	message[count++] = ' ';
-	count += ft_ltobuffer(philo->id, message + count);	
+	count = ft_ltobuffer(timestamp_usec, philo->message);	
+	philo->message[count++] = ' ';
+	count += ft_ltobuffer(philo->id, philo->message + count);	
 	if (philo->state == thinking)
-		ft_memmove(message + count, " is thinking\n", 13);
+		ft_memmove(philo->message + count, " is thinking\n", 13);
 	if (philo->state == eating)
-		ft_memmove(message + count, " is eating\n", 11);
+		ft_memmove(philo->message + count, " is eating\n", 11);
 	if (philo->state == right_fork_taking)
-		ft_memmove(message + count, " has taken a fork\n", 18);
+		ft_memmove(philo->message + count, " has taken a fork\n", 18);
 	if (philo->state == left_fork_taking)
-		ft_memmove(message + count, " has taken a fork\n", 18);
+		ft_memmove(philo->message + count, " has taken a fork\n", 18);
 	if (philo->state == sleeping)
-		ft_memmove(message + count, " is sleeping\n", 13);
+		ft_memmove(philo->message + count, " is sleeping\n", 13);
 	if (philo->state == dead)
-		ft_memmove(message + count, " died\n", 6);
+		ft_memmove(philo->message + count, " died\n", 6);
 }
 
-//void	print_state(t_philo *philo, t_param *param)
-void	print_state(t_philo *philo)
+void	print_state(t_philo *philo, t_mutex *prompt_mutex)
 {
-	char	message[50];
-
-	concatenate_philo_message(philo, message);
-	write(1, message, ft_strlen(message));
+	pthread_mutex_lock(prompt_mutex);
+	concatenate_philo_message(philo);
+	write(1, philo->message, ft_strlen(philo->message));
+	pthread_mutex_unlock(prompt_mutex);
 }

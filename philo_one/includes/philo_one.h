@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/04 00:26:54 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:39:40 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include <pthread.h>
 
-# define STATE_NB	5
+# define STATE_NB		5
+# define MESSAGE_LEN	50
 
 enum				e_philo
 {
@@ -35,6 +36,7 @@ typedef struct		s_philo
 	t_mutex			fork;
 	int				id;
 	enum e_philo	state;
+	char			message[MESSAGE_LEN];
 	struct s_philo	*next;
 }					t_philo;
 
@@ -52,9 +54,10 @@ typedef struct		s_pack
 	t_philo			*philo;
 	t_param			*param;
 	void			(*philo_actions[STATE_NB])(t_philo *philo, t_param *param);
+	t_mutex			prompt_mutex;
 }					t_pack;
 
-void				print_state(t_philo *philo);
+void				print_state(t_philo *philo, t_mutex *prompt_mutex);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);
