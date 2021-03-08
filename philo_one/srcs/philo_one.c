@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/07 19:25:36 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/08 10:56:38 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	*live(void *pack_in)
 	//pthread_mutex_lock(&philo_place->fork);
 	//printf("philo %d takes his fork\n", philo_place->id);
 	//pthread_mutex_unlock(&philo_place->fork);
+	gettimeofday(&philo->begin_tv, NULL);
 	while (1)
 	{
 		print_state(philo, &pack->prompt_mutex);

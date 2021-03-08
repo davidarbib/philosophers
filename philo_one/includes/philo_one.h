@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/07 16:33:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/08 11:42:52 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_ONE_H
 
 # include <pthread.h>
+# include <sys/time.h>
 
 # define STATE_NB		5
 # define MESSAGE_LEN	50
@@ -36,7 +37,7 @@ typedef struct		s_philo
 	t_mutex			fork;
 	int				id;
 	enum e_philo	state;
-	char			message[MESSAGE_LEN];
+	struct timeval	begin_tv;
 	struct s_philo	*next;
 }					t_philo;
 
@@ -58,7 +59,6 @@ typedef struct		s_pack
 }					t_pack;
 
 void				print_state(t_philo *philo, t_mutex *prompt_mutex);
-//void				print_state(t_philo *philo);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);
@@ -70,5 +70,6 @@ void				take_left_fork(t_philo *philo, t_param *param);
 void				philo_eat(t_philo *place, t_param *param);
 void				philo_sleep(t_philo *philo, t_param *param);
 void				philo_think(t_philo *philo, t_param *param);
+long				get_relative_ms(struct timeval begin_tv);
 
 #endif

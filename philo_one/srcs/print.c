@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/07 19:25:47 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/08 10:56:34 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,56 +75,23 @@ int main()
 }
 */
 
-void	concatenate_philo_message(t_philo *philo)
-{
-	int		timestamp_usec;
-	int		count;	
-
-	memset(philo->message, 0, MESSAGE_LEN);
-	timestamp_usec = get_usec_from_epoch();
-	count = ft_ltobuffer(timestamp_usec, philo->message);	
-	philo->message[count++] = ' ';
-	count += ft_ltobuffer(philo->id, philo->message + count);	
-	if (philo->state == thinking)
-		ft_memmove(philo->message + count, " is thinking\n", 13);
-	if (philo->state == eating)
-		ft_memmove(philo->message + count, " is eating\n", 11);
-	if (philo->state == right_fork_taking)
-		ft_memmove(philo->message + count, " has taken a fork\n", 18);
-	if (philo->state == left_fork_taking)
-		ft_memmove(philo->message + count, " has taken a fork\n", 18);
-	if (philo->state == sleeping)
-		ft_memmove(philo->message + count, " is sleeping\n", 13);
-	if (philo->state == dead)
-		ft_memmove(philo->message + count, " died\n", 6);
-}
-
-/*
 void	print_state(t_philo *philo, t_mutex *prompt_mutex)
 {
+	long	interval_ms;
+
 	pthread_mutex_lock(prompt_mutex);
-	concatenate_philo_message(philo);
-	write(1, philo->message, ft_strlen(philo->message));
-	pthread_mutex_unlock(prompt_mutex);
-}
-*/
-
-void	print_state(t_philo *philo, t_mutex *prompt_mutex)
-{
-	(void)prompt_mutex;
-	//pthread_mutex_lock(prompt_mutex);
+	interval_ms = get_relative_ms(philo->begin_tv);
 	if (philo->state == thinking)
-		printf("%ld %d is thinking\n", get_usec_from_epoch(), philo->id);
+		printf("%ld %d is thinking\n", interval_ms, philo->id);
 	if (philo->state == eating)
-		printf("%ld %d is eating\n", get_usec_from_epoch(), philo->id);
+		printf("%ld %d is eating\n", interval_ms, philo->id);
 	if (philo->state == right_fork_taking)
-		printf("%ld %d has taken a fork\n", get_usec_from_epoch(), philo->id);
+		printf("%ld %d has taken a fork\n", interval_ms, philo->id);
 	if (philo->state == left_fork_taking)
-		printf("%ld %d has taken a fork\n", get_usec_from_epoch(), philo->id);
+		printf("%ld %d has taken a fork\n", interval_ms, philo->id);
 	if (philo->state == sleeping)
-		printf("%ld %d is sleeping\n", get_usec_from_epoch(), philo->id);
+		printf("%ld %d is sleeping\n", interval_ms, philo->id);
 	if (philo->state == dead)
-		printf("%ld %d died\n", get_usec_from_epoch(), philo->id);
-	fflush(stdout);
-	//pthread_mutex_unlock(prompt_mutex);
+		printf("%ld %d died\n", interval_ms, philo->id);
+	pthread_mutex_unlock(prompt_mutex);
 }
