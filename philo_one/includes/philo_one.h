@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/05 16:39:40 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/07 16:33:27 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct		s_pack
 }					t_pack;
 
 void				print_state(t_philo *philo, t_mutex *prompt_mutex);
+//void				print_state(t_philo *philo);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);

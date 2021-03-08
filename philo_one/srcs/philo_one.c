@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/05 16:39:12 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/07 19:25:36 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		return (1);
 	node = head;
 	number_of_philosophers--;
-	while (number_of_philosophers > 0)
+	while (number_of_philosophers >= 0)
 	{
 		node->next = (t_philo *)malloc(sizeof(t_philo));
 		if (!node)
@@ -88,8 +88,9 @@ void	*live(void *pack_in)
 
 	pack = (t_pack *)pack_in;
 	philo = pack->philo;
+	printf("philo id in thread : %d\n", philo->id);
 	param = pack->param;
-	//pthread_mutex_lock(&philo_place->fork);	
+	//pthread_mutex_lock(&philo_place->fork);
 	//printf("philo %d takes his fork\n", philo_place->id);
 	//pthread_mutex_unlock(&philo_place->fork);
 	while (1)
@@ -122,19 +123,23 @@ void	simulate_philo_table(t_pack *sim_pack)
 	philo = sim_pack->philo;
 	while (1)
 	{
-		sim_pack->philo = philo;
-		pthread_create(&philo->soul, NULL, live, sim_pack);
 		pthread_mutex_init(&philo->fork, NULL);
-		philo = philo->next;
-		if (philo == head)
+		pthread_create(&philo->soul, NULL, live, sim_pack);
+		printf("philo id : %d\n", philo->id);
+		printf("simpack philo id : %d\n", sim_pack->philo->id);
+		if (philo->id == 0)
 			break;
+		philo = philo->next;
+		sim_pack->philo = philo;
 	}
+	philo = head;
 	while (1)
 	{
+		printf("philo id join: %d\n", philo->id);
 		pthread_join(philo->soul, NULL);
-		philo = philo->next;
-		if (philo == head)
+		if (philo->id == 0)
 			break;
+		philo = philo->next;
 	}
 }
 
