@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 10:56:38 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/08 15:47:55 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 			return (1);
 		node->id = number_of_philosophers;
 		node->state = thinking;
+		if (node->id % 2)
+			node->state = sleeping;
 		number_of_philosophers--;
 		node = node->next;
 	}

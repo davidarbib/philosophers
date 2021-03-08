@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 11:42:52 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/08 14:03:39 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # define STATE_NB		5
 # define MESSAGE_LEN	50
+# define TIME_FACTOR	1000
+# define SLEEP_STEP		500
 
 enum				e_philo
 {
@@ -65,6 +67,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
 long				get_usec_from_epoch();
+int					ft_usleep(int desired_interval_ms);
 void				take_his_fork(t_philo *philo, t_param *param);
 void				take_left_fork(t_philo *philo, t_param *param);
 void				philo_eat(t_philo *place, t_param *param);
