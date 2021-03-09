@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 15:42:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/09 15:48:47 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	philo_eat(t_philo *philo, t_param *param)
 {
 	(void)philo;
 	ft_usleep(param->time_to_eat);
+	gettimeofday(&philo->last_dinner_tv);
 }
 
 void	take_his_fork(t_philo *philo, t_param *param)

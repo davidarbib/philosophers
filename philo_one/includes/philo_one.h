@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 14:03:39 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/09 15:44:36 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define TIME_FACTOR	1000
 # define SLEEP_STEP		500
 
+
 enum				e_philo
 {
 	right_fork_taking,
@@ -33,16 +34,6 @@ enum				e_philo
 
 typedef pthread_mutex_t	t_mutex;
 
-typedef struct		s_philo
-{
-	pthread_t		soul;
-	t_mutex			fork;
-	int				id;
-	enum e_philo	state;
-	struct timeval	begin_tv;
-	struct s_philo	*next;
-}					t_philo;
-
 typedef struct		s_param
 {
 	int				number_of_philosophers;
@@ -50,16 +41,23 @@ typedef struct		s_param
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosophers_must_eat;
+	t_mutex			prompt_mutex;
 }					t_param;
 
-typedef struct		s_pack
+typedef struct		s_philo
 {
-	t_philo			*philo;
-	t_param			*param;
-	void			(*philo_actions[STATE_NB])(t_philo *philo, t_param *param);
-	t_mutex			prompt_mutex;
-}					t_pack;
+	pthread_t		soul;
+	t_mutex			fork;
+	int				id;
+	enum e_philo	state;
+	struct timeval	begin_tv;
+	struct timeval	last_dinner_tv;
+	t_param			*sim_param;
+	struct s_philo	*next;
+}					t_philo;
 
+void				(*g_philo_actions[STATE_NB])
+											(t_philo *philo, t_param *param);
 void				print_state(t_philo *philo, t_mutex *prompt_mutex);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
