@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/09 15:55:31 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/09 16:17:27 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	*live(void *atypic_philo)
 		if (philo->state == STATE_NB)
 			philo->state = 0;
 	}
+	param->death = 1;
 	return (NULL);
 }
 
@@ -140,6 +141,8 @@ void	simulate_philo_table(t_philo *table, t_param *param)
 			break;
 		philo = philo->next;
 	}
+	while (!param->death)
+		;
 }
 
 int main(int ac, char **av)
@@ -159,9 +162,8 @@ int main(int ac, char **av)
 	}
 	create_philo_table(param.number_of_philosophers, &table);
 	init_ft_array();
+	param.death = 0;
 	pthread_mutex_init(&param.prompt_mutex, NULL);
 	simulate_philo_table(table, &param);
-	while (1)
-		;
 	return (0);
 }

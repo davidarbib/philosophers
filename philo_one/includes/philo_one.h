@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/09 15:44:36 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/09 16:10:22 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct		s_param
 	int				time_to_sleep;
 	int				number_of_times_each_philosophers_must_eat;
 	t_mutex			prompt_mutex;
+	int				death;
 }					t_param;
 
 typedef struct		s_philo
