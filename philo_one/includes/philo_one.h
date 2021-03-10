@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/09 16:10:22 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/10 20:07:28 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
 # define SLEEP_STEP		500
-
 
 enum				e_philo
 {
@@ -59,6 +58,7 @@ typedef struct		s_philo
 
 void				(*g_philo_actions[STATE_NB])
 											(t_philo *philo, t_param *param);
+t_mutex				g_test_mutex;
 void				print_state(t_philo *philo, t_mutex *prompt_mutex);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);

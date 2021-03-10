@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 14:02:54 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/10 20:21:04 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,21 +77,29 @@ int main()
 
 void	print_state(t_philo *philo, t_mutex *prompt_mutex)
 {
+	(void)prompt_mutex;
 	long	interval_ms;
 
 	pthread_mutex_lock(prompt_mutex);
 	interval_ms = get_relative_ms(philo->begin_tv);
-	pthread_mutex_unlock(prompt_mutex);
 	if (philo->state == thinking)
 		printf("%ld %d is thinking\n", interval_ms, philo->id);
 	if (philo->state == eating)
 		printf("%ld %d is eating\n", interval_ms, philo->id);
 	if (philo->state == right_fork_taking)
-		printf("%ld %d has taken a fork\n", interval_ms, philo->id);
+	{
+		printf("%ld %d has taken a fork %p\n", interval_ms, philo->id, 
+				&philo->fork);
+	}
 	if (philo->state == left_fork_taking)
-		printf("%ld %d has taken a fork\n", interval_ms, philo->id);
+	{
+		printf("%ld %d has taken a fork %p\n", interval_ms, philo->id, 
+				&philo->next->fork);
+	}
 	if (philo->state == sleeping)
 		printf("%ld %d is sleeping\n", interval_ms, philo->id);
 	if (philo->state == dead)
 		printf("%ld %d died\n", interval_ms, philo->id);
+	if (philo->state != dead)
+		pthread_mutex_unlock(prompt_mutex);
 }
