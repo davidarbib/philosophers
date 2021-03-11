@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/10 20:44:03 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/11 16:54:15 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	create_philo_table(int number_of_philosophers, t_philo **table)
+int	create_philo_table(int number_of_philosophers, t_philo **table,
+						t_mutex *forks)
 {
 	t_philo	*node;
 	t_philo	*head;
@@ -26,17 +27,19 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		return (1);
 	head->id = number_of_philosophers--;
 	head->state = thinking;
-	pthread_mutex_init(&head->fork, NULL);
+	head->fork = forks + head->id;
+	pthread_mutex_init(head->fork, NULL);
 	node = head;
 	while (number_of_philosophers >= 0)
 	{
 		node->next = (t_philo *)malloc(sizeof(t_philo));
-		if (!node)
+		if (!node->next)
 			return (1);
 		node = node->next;
 		node->id = number_of_philosophers--;
 		node->state = thinking;
-		pthread_mutex_init(&node->fork, NULL);
+		node->fork = forks + node->id;
+		pthread_mutex_init(node->fork, NULL);
 	}
 	node->next = head;
 	*table = head;
@@ -107,21 +110,22 @@ void	*live(void *atypic_philo)
 	while (1)
 	{
 		if (check_death(philo, param->time_to_die))
-		{
-			philo->state = dead;
-			print_state(philo, &param->prompt_mutex);
 			break;
-		}
-		//pthread_mutex_lock(&g_test_mutex);
-		//pthread_mutex_lock(&param->prompt_mutex);
 		print_state(philo, &param->prompt_mutex);
 		g_philo_actions[philo->state](philo, param);
-		//pthread_mutex_unlock(&g_test_mutex);
 		philo->state++;
 		if (philo->state == STATE_NB)
 			philo->state = 0;
 	}
 	printf("un camarade est mort\n");
+	if (!param->death)
+	{
+		param->death = 1;
+		philo->state = dead;
+		print_state(philo, &param->prompt_mutex);
+		usleep(param->time_to_die * 1000);
+		pthread_mutex_unlock(&param->prompt_mutex);
+	}
 	return (NULL);
 }
 
@@ -145,7 +149,7 @@ void	simulate_philo_table(t_philo *table, t_param *param)
 	{
 		philo->sim_param = param;
 		pthread_create(&philo->soul, NULL, live, philo);
-		printf("philo id : %d his fork is %p\n", philo->id, &philo->fork);
+		printf("philo id : %d his fork is %p\n", philo->id, philo->fork);
 		if (philo->id == 0)
 			break;
 		philo = philo->next;
@@ -167,15 +171,24 @@ void	print_table(t_philo *table)
 	while (1)
 	{
 		printf("Philo id : %d\n", philo->id);
-		printf("Philo fork : %p\n", &philo->fork);
+		printf("Philo fork : %p\n", philo->fork);
 		philo = philo->next;
 	}
+}
+
+int	init_forks(t_param *param, t_mutex **forks)
+{
+	*forks = (t_mutex *)calloc(param->number_of_philosophers, sizeof(t_mutex));
+	if (!*forks)
+		return (1);
+	return (0);
 }
 
 int main(int ac, char **av)
 {
 	t_param	param;
 	t_philo	*table;
+	t_mutex	*forks;
 	
 	if (ac < 5 || ac > 6)
 	{
@@ -187,11 +200,13 @@ int main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
-	create_philo_table(param.number_of_philosophers, &table);
+	forks = NULL;
+	if (init_forks(&param, &forks))
+		return (1);
+	create_philo_table(param.number_of_philosophers, &table, forks);
 	init_ft_array();
 	param.death = 0;
 	pthread_mutex_init(&param.prompt_mutex, NULL);
-	pthread_mutex_init(&g_test_mutex, NULL);
 	simulate_philo_table(table, &param);
 	return (0);
 }
