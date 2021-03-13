@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/13 11:06:26 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/13 13:24:45 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,6 @@ void	*live(void *atypic_philo)
 		usleep(1000);
 	while (1)
 	{
-		if (check_death(philo, param->time_to_die))
-			break;
-		print_state(philo, &param->prompt_mutex);
 		g_philo_actions[philo->state](philo, param);
 		philo->state++;
 		if (philo->state == STATE_NB)
@@ -119,8 +116,8 @@ void	*live(void *atypic_philo)
 	if (!param->death)
 	{
 		param->death = 1;
+		printf("%ld %d died\n", get_relative_ms(philo->begin_tv), philo->id);
 		philo->state = dead;
-		print_state(philo, &param->prompt_mutex);
 		usleep(param->time_to_die * 1000);
 		pthread_mutex_unlock(&param->prompt_mutex);
 	}
