@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/11 16:54:15 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/13 11:06:26 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	create_philo_table(int number_of_philosophers, t_philo **table,
-						t_mutex *forks)
+int	create_philo_table(int number_of_philosophers, t_philo **table)
 {
 	t_philo	*node;
 	t_philo	*head;
@@ -27,8 +26,7 @@ int	create_philo_table(int number_of_philosophers, t_philo **table,
 		return (1);
 	head->id = number_of_philosophers--;
 	head->state = thinking;
-	head->fork = forks + head->id;
-	pthread_mutex_init(head->fork, NULL);
+	pthread_mutex_init(&head->fork, NULL);
 	node = head;
 	while (number_of_philosophers >= 0)
 	{
@@ -39,7 +37,7 @@ int	create_philo_table(int number_of_philosophers, t_philo **table,
 		node->id = number_of_philosophers--;
 		node->state = thinking;
 		node->fork = forks + node->id;
-		pthread_mutex_init(node->fork, NULL);
+		pthread_mutex_init(&node->fork, NULL);
 	}
 	node->next = head;
 	*table = head;
@@ -176,14 +174,6 @@ void	print_table(t_philo *table)
 	}
 }
 
-int	init_forks(t_param *param, t_mutex **forks)
-{
-	*forks = (t_mutex *)calloc(param->number_of_philosophers, sizeof(t_mutex));
-	if (!*forks)
-		return (1);
-	return (0);
-}
-
 int main(int ac, char **av)
 {
 	t_param	param;
@@ -201,9 +191,7 @@ int main(int ac, char **av)
 		return (1);
 	}
 	forks = NULL;
-	if (init_forks(&param, &forks))
-		return (1);
-	create_philo_table(param.number_of_philosophers, &table, forks);
+	create_philo_table(param.number_of_philosophers, &table);
 	init_ft_array();
 	param.death = 0;
 	pthread_mutex_init(&param.prompt_mutex, NULL);

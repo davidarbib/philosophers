@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/11 14:44:54 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/13 11:04:59 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct		s_param
 typedef struct		s_philo
 {
 	pthread_t		soul;
-	t_mutex			*fork;
+	t_mutex			fork;
 	int				id;
 	enum e_philo	state;
 	struct timeval	begin_tv;
