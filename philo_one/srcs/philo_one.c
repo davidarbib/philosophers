@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/13 13:24:45 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/14 23:06:24 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		node = node->next;
 		node->id = number_of_philosophers--;
 		node->state = thinking;
-		node->fork = forks + node->id;
 		pthread_mutex_init(&node->fork, NULL);
 	}
 	node->next = head;
@@ -84,14 +83,6 @@ int	parse_args(int ac, char **av, t_param *param)
 	return (0);
 }
 
-int		check_death(t_philo *philo, int	time_to_die)
-{
-	//if (philo->id == 2)
-	//	return (1);
-	if (get_relative_ms(philo->last_dinner_tv) > time_to_die)
-		return (1);
-	return (0);
-}
 
 void	*live(void *atypic_philo)
 {
@@ -105,7 +96,7 @@ void	*live(void *atypic_philo)
 	philo->last_dinner_tv = philo->begin_tv;
 	if (philo->id % 2)
 		usleep(1000);
-	while (1)
+	while (philo->state != dead)
 	{
 		g_philo_actions[philo->state](philo, param);
 		philo->state++;
@@ -133,23 +124,36 @@ void	init_ft_array()
 	g_philo_actions[thinking] = philo_think;
 }
 
-void	simulate_philo_table(t_philo *table, t_param *param)
+void	launch_simulation(t_philo *philo, t_param *param)
 {
-	t_philo *philo;
-	t_philo *head;
-
-	head = table;
-	philo = table;
 	while (1)
 	{
 		philo->sim_param = param;
 		pthread_create(&philo->soul, NULL, live, philo);
-		printf("philo id : %d his fork is %p\n", philo->id, philo->fork);
+		printf("philo id : %d his fork is %p\n", philo->id, &philo->fork);
 		if (philo->id == 0)
 			break;
 		philo = philo->next;
 	}
-	philo = head;
+}
+
+void	wait_for_death(t_philo *philo, t_param *param)
+{
+	while (1)
+	{
+		pthread_join(philo->soul, NULL);
+		if (get_relative_ms(philo->last_dinner_tv) > param->time_to_die)
+		{
+			philo->state = dead;
+			param->death = 1;
+			break;
+		}
+		philo = philo->next;
+	}
+}
+
+void	join_threads(t_philo *philo)
+{
 	while (1)
 	{
 		pthread_join(philo->soul, NULL);
@@ -157,6 +161,20 @@ void	simulate_philo_table(t_philo *table, t_param *param)
 			break;
 		philo = philo->next;
 	}
+}
+
+void	simulate_philo_table(t_philo *table, t_param *param)
+{
+	t_philo *philo;
+	t_philo *head;
+
+	head = table;
+	philo = table;
+	launch_simulation(philo, param);
+	philo = head;
+	wait_for_death(philo, param);
+	philo = head;
+	join_threads(philo);
 	printf("abort simulation\n");
 }
 
@@ -166,7 +184,7 @@ void	print_table(t_philo *table)
 	while (1)
 	{
 		printf("Philo id : %d\n", philo->id);
-		printf("Philo fork : %p\n", philo->fork);
+		printf("Philo fork : %p\n", &philo->fork);
 		philo = philo->next;
 	}
 }
