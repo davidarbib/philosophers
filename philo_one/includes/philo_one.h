@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/14 23:07:04 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/16 14:39:47 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct		s_param
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosophers_must_eat;
+	int				fed_philo_n;
+	struct timeval	begin_tv;
 	t_mutex			prompt_mutex;
 	int				death;
 }					t_param;
@@ -50,8 +52,8 @@ typedef struct		s_philo
 	t_mutex			fork;
 	int				id;
 	enum e_philo	state;
-	struct timeval	begin_tv;
 	struct timeval	last_dinner_tv;
+	int				meals_n;
 	t_param			*sim_param;
 	struct s_philo	*next;
 }					t_philo;

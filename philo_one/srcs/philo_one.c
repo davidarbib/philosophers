@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/14 23:06:24 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/16 16:45:22 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		return (1);
 	head->id = number_of_philosophers--;
 	head->state = thinking;
+	//head->last_dinner_tv = (struct timeval){0, 0};
+	head->meals_n = 0;
 	pthread_mutex_init(&head->fork, NULL);
 	node = head;
 	while (number_of_philosophers >= 0)
@@ -36,6 +38,8 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		node = node->next;
 		node->id = number_of_philosophers--;
 		node->state = thinking;
+		node->last_dinner_tv = (struct timeval){0, 0};
+		node->meals_n = 0;
 		pthread_mutex_init(&node->fork, NULL);
 	}
 	node->next = head;
@@ -92,25 +96,15 @@ void	*live(void *atypic_philo)
 	philo = (t_philo *)atypic_philo;
 	printf("philo id in thread : %d\n", philo->id);
 	param = philo->sim_param;
-	gettimeofday(&philo->begin_tv, NULL);
-	philo->last_dinner_tv = philo->begin_tv;
+	philo->last_dinner_tv = param->begin_tv;
 	if (philo->id % 2)
-		usleep(1000);
-	while (philo->state != dead)
+		usleep(10);
+	while (1)
 	{
 		g_philo_actions[philo->state](philo, param);
 		philo->state++;
 		if (philo->state == STATE_NB)
 			philo->state = 0;
-	}
-	printf("un camarade est mort\n");
-	if (!param->death)
-	{
-		param->death = 1;
-		printf("%ld %d died\n", get_relative_ms(philo->begin_tv), philo->id);
-		philo->state = dead;
-		usleep(param->time_to_die * 1000);
-		pthread_mutex_unlock(&param->prompt_mutex);
 	}
 	return (NULL);
 }
@@ -126,6 +120,7 @@ void	init_ft_array()
 
 void	launch_simulation(t_philo *philo, t_param *param)
 {
+	gettimeofday(&param->begin_tv, NULL);
 	while (1)
 	{
 		philo->sim_param = param;
@@ -139,13 +134,21 @@ void	launch_simulation(t_philo *philo, t_param *param)
 
 void	wait_for_death(t_philo *philo, t_param *param)
 {
+	param->fed_philo_n = 0;
+	usleep(param->time_to_eat * TIME_FACTOR);
 	while (1)
 	{
-		pthread_join(philo->soul, NULL);
 		if (get_relative_ms(philo->last_dinner_tv) > param->time_to_die)
 		{
 			philo->state = dead;
-			param->death = 1;
+			pthread_mutex_lock(&param->prompt_mutex);
+			printf("%ld %d died\n", get_relative_ms(param->begin_tv),
+					philo->id);
+			break;
+		}
+		if (param->fed_philo_n == param->number_of_philosophers)
+		{
+			pthread_mutex_lock(&param->prompt_mutex);
 			break;
 		}
 		philo = philo->next;
@@ -166,15 +169,13 @@ void	join_threads(t_philo *philo)
 void	simulate_philo_table(t_philo *table, t_param *param)
 {
 	t_philo *philo;
-	t_philo *head;
 
-	head = table;
 	philo = table;
 	launch_simulation(philo, param);
-	philo = head;
+	philo = table;
 	wait_for_death(philo, param);
-	philo = head;
-	join_threads(philo);
+	//philo = table;
+	//join_threads(philo);
 	printf("abort simulation\n");
 }
 
@@ -193,7 +194,6 @@ int main(int ac, char **av)
 {
 	t_param	param;
 	t_philo	*table;
-	t_mutex	*forks;
 	
 	if (ac < 5 || ac > 6)
 	{
@@ -205,10 +205,9 @@ int main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
-	forks = NULL;
 	create_philo_table(param.number_of_philosophers, &table);
 	init_ft_array();
-	param.death = 0;
+	param.fed_philo_n = 0;
 	pthread_mutex_init(&param.prompt_mutex, NULL);
 	simulate_philo_table(table, &param);
 	return (0);
