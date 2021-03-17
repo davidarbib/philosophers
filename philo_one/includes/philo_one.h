@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/16 14:39:47 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/17 13:12:23 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct		s_param
 	int				number_of_times_each_philosophers_must_eat;
 	int				fed_philo_n;
 	struct timeval	begin_tv;
-	t_mutex			prompt_mutex;
+	t_mutex			*prompt_mutex;
 	int				death;
 }					t_param;
 

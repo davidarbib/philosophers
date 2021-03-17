@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/16 16:45:22 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/17 15:39:00 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	parse_args(int ac, char **av, t_param *param)
 	return (0);
 }
 
-
 void	*live(void *atypic_philo)
 {
 	t_philo *philo;
@@ -99,7 +98,7 @@ void	*live(void *atypic_philo)
 	philo->last_dinner_tv = param->begin_tv;
 	if (philo->id % 2)
 		usleep(10);
-	while (1)
+	while (!param->death)
 	{
 		g_philo_actions[philo->state](philo, param);
 		philo->state++;
@@ -125,6 +124,7 @@ void	launch_simulation(t_philo *philo, t_param *param)
 	{
 		philo->sim_param = param;
 		pthread_create(&philo->soul, NULL, live, philo);
+		pthread_detach(philo->soul);
 		printf("philo id : %d his fork is %p\n", philo->id, &philo->fork);
 		if (philo->id == 0)
 			break;
@@ -141,14 +141,14 @@ void	wait_for_death(t_philo *philo, t_param *param)
 		if (get_relative_ms(philo->last_dinner_tv) > param->time_to_die)
 		{
 			philo->state = dead;
-			pthread_mutex_lock(&param->prompt_mutex);
+			param->death = 1;
 			printf("%ld %d died\n", get_relative_ms(param->begin_tv),
 					philo->id);
 			break;
 		}
 		if (param->fed_philo_n == param->number_of_philosophers)
 		{
-			pthread_mutex_lock(&param->prompt_mutex);
+			param->death = 1;
 			break;
 		}
 		philo = philo->next;
@@ -190,6 +190,28 @@ void	print_table(t_philo *table)
 	}
 }
 
+void	destroy_simulation(t_philo **table, t_param *param)
+{
+	int		i;
+	t_philo	*tmp;
+	t_philo	*node;
+
+	pthread_mutex_destroy(param->prompt_mutex);
+	free(param->prompt_mutex);
+	param->prompt_mutex = NULL;
+	node = *table;
+	i = 0;
+	while (i < param->number_of_philosophers)
+	{
+		tmp = node;
+		node = node->next;
+		//pthread_mutex_destroy(&tmp->fork);
+		free(tmp);
+		i++;
+	}
+	*table = NULL;
+}
+
 int main(int ac, char **av)
 {
 	t_param	param;
@@ -207,8 +229,13 @@ int main(int ac, char **av)
 	}
 	create_philo_table(param.number_of_philosophers, &table);
 	init_ft_array();
+	param.prompt_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
+	if (!param.prompt_mutex)
+		return (1);
 	param.fed_philo_n = 0;
-	pthread_mutex_init(&param.prompt_mutex, NULL);
+	pthread_mutex_init(param.prompt_mutex, NULL);
 	simulate_philo_table(table, &param);
+	usleep(param.time_to_eat * TIME_FACTOR);
+	destroy_simulation(&table, &param);
 	return (0);
 }
