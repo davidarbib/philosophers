@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 12:54:55 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/18 16:38:14 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ void				simulate_philo_table(t_philo *table, t_param *param);
 void				*live(void *atypic_philo);
 void				launch_simulation(t_philo *philo, t_param *param);
 int					parse_args(int ac, char **av, t_param *param);
+int					check_for_death(t_philo *philo, t_param *param);
 
 #endif

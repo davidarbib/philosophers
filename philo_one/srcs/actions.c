@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 13:12:06 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/18 16:39:04 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	take_his_fork(t_philo *philo, t_param *param)
 {
 	while (!philo->free_fork)
 	{
-		if (param->death)
+		if (check_for_death(philo, param))
 			return ;
 	}	
 	pthread_mutex_lock(&philo->fork);
@@ -49,7 +49,7 @@ void	take_left_fork(t_philo *philo, t_param *param)
 {
 	while (!philo->next->free_fork)
 	{
-		if (param->death)
+		if (check_for_death(philo, param))
 			return ;
 	}	
 	pthread_mutex_lock(&philo->next->fork);
