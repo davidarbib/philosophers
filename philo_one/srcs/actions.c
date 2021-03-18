@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/17 14:32:35 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/18 13:12:06 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,13 @@ void	philo_eat(t_philo *philo, t_param *param)
 
 void	take_his_fork(t_philo *philo, t_param *param)
 {
+	while (!philo->free_fork)
+	{
+		if (param->death)
+			return ;
+	}	
 	pthread_mutex_lock(&philo->fork);
+	philo->free_fork = 0;
 	if (!param->death)
 	{
 		printf("%ld %d has taken a fork\n", get_relative_ms(param->begin_tv),
@@ -41,7 +47,13 @@ void	take_his_fork(t_philo *philo, t_param *param)
 
 void	take_left_fork(t_philo *philo, t_param *param)
 {
+	while (!philo->next->free_fork)
+	{
+		if (param->death)
+			return ;
+	}	
 	pthread_mutex_lock(&philo->next->fork);
+	philo->next->free_fork = 0;
 	if (!param->death)
 	{
 		printf("%ld %d has taken a fork\n", get_relative_ms(param->begin_tv),
@@ -52,7 +64,9 @@ void	take_left_fork(t_philo *philo, t_param *param)
 void	philo_sleep(t_philo *philo, t_param *param)
 {
 	pthread_mutex_unlock(&philo->fork);
+	philo->free_fork = 1;
 	pthread_mutex_unlock(&philo->next->fork);
+	philo->next->free_fork = 1;
 	if (!param->death)
 	{
 		printf("%ld %d is sleeping\n", get_relative_ms(param->begin_tv),

@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/17 13:12:23 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/18 12:54:55 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <pthread.h>
 # include <sys/time.h>
+# include <stdio.h>
 
 # define STATE_NB		5
 # define MESSAGE_LEN	50
@@ -50,6 +51,7 @@ typedef struct		s_philo
 {
 	pthread_t		soul;
 	t_mutex			fork;
+	int				free_fork;
 	int				id;
 	enum e_philo	state;
 	struct timeval	last_dinner_tv;
@@ -75,5 +77,9 @@ void				philo_eat(t_philo *place, t_param *param);
 void				philo_sleep(t_philo *philo, t_param *param);
 void				philo_think(t_philo *philo, t_param *param);
 long				get_relative_ms(struct timeval begin_tv);
+void				simulate_philo_table(t_philo *table, t_param *param);
+void				*live(void *atypic_philo);
+void				launch_simulation(t_philo *philo, t_param *param);
+int					parse_args(int ac, char **av, t_param *param);
 
 #endif
