@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 16:53:53 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/18 16:59:47 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,4 @@ void	simulate_philo_table(t_philo *table, t_param *param)
 	launch_simulation(philo, param);
 	philo = table;
 	join_threads(philo);
-	printf("abort simulation\n");
 }
