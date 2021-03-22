@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 16:39:04 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/22 11:59:56 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	philo_eat(t_philo *philo, t_param *param)
 		printf("%ld %d is eating\n", get_relative_ms(param->begin_tv),
 				philo->id);
 	}
-	gettimeofday(&philo->last_dinner_tv, NULL);
-	ft_usleep(param->time_to_eat);
 	philo->meals_n++;
 	if (param->number_of_times_each_philosophers_must_eat > 0
 		&& philo->meals_n == param->number_of_times_each_philosophers_must_eat)
 		param->fed_philo_n++;
+	gettimeofday(&philo->last_dinner_tv, NULL);
+	ft_usleep(param->time_to_eat);
 }
 
 void	take_his_fork(t_philo *philo, t_param *param)
