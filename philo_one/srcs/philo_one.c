@@ -6,13 +6,14 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 14:26:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/22 15:24:19 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philo_one.h"
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 int	create_philo_table(int number_of_philosophers, t_philo **table)
@@ -28,6 +29,7 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 	head->state = thinking;
 	head->last_dinner_tv = (struct timeval){0, 0};
 	head->meals_n = 0;
+	memset(head->buf, 0, MESSAGE_LEN);
 	pthread_mutex_init(&head->fork, NULL);
 	head->free_fork = 1;
 	node = head;
@@ -41,6 +43,7 @@ int	create_philo_table(int number_of_philosophers, t_philo **table)
 		node->state = thinking;
 		node->last_dinner_tv = (struct timeval){0, 0};
 		node->meals_n = 0;
+		memset(node->buf, 0, MESSAGE_LEN);
 		pthread_mutex_init(&node->fork, NULL);
 		node->free_fork = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 20:26:03 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/08 13:49:51 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/22 16:45:11 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ long	get_relative_ms(struct timeval begin_tv)
 
 int		ft_usleep(int desired_interval_ms)
 {
-	struct timeval	ref_tv;
+	int time_ms;
 	
-	gettimeofday(&ref_tv, NULL);
-	while (get_relative_ms(ref_tv) < desired_interval_ms)
-		usleep(SLEEP_STEP);
+	time_ms = 0;
+	while (i < desired_interval_ms)
+	{
+		usleep(SLEEP_STEP_MS);
+		time_ms += SLEEP_STEP_MS;
+	}
 	return (0);
 }
