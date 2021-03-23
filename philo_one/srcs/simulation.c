@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 16:59:47 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/23 19:11:29 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		check_for_death(t_philo *philo, t_param *param)
 	{
 		philo->state = dead;
 		param->death = 1;
-		//pthread_mutex_lock(param->prompt_mutex);
 		printf("%ld %d died\n", get_relative_ms(param->begin_tv),
 				philo->id);
 		return (1);
@@ -54,36 +53,21 @@ void	*live(void *atypic_philo)
 	return (NULL);
 }
 
-void	launch_simulation(t_philo *philo, t_param *param)
+void	simulate_philo_table(t_philo *philos, t_param *param)
 {
+	int i;
+
 	gettimeofday(&param->begin_tv, NULL);
-	while (1)
+	i = 0;
+	while (i < param->number_of_philosophers)
 	{
-		philo->sim_param = param;
-		pthread_create(&philo->soul, NULL, live, philo);
-		if (philo->id == 0)
-			break;
-		philo = philo->next;
+		pthread_create(&(philos[i].soul), NULL, live, philos + i);
+		i++;
 	}
-}
-
-void	join_threads(t_philo *philo)
-{
-	while (1)
+	i = 0;
+	while (i < param->number_of_philosophers)
 	{
-		pthread_join(philo->soul, NULL);
-		if (philo->id == 0)
-			break;
-		philo = philo->next;
+		pthread_join(philos[i].soul, NULL);
+		i++;
 	}
-}
-
-void	simulate_philo_table(t_philo *table, t_param *param)
-{
-	t_philo *philo;
-
-	philo = table;
-	launch_simulation(philo, param);
-	philo = table;
-	join_threads(philo);
 }

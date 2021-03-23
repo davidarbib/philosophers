@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 14:26:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/23 19:28:41 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,79 +15,76 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	create_philo_table(int number_of_philosophers, t_philo **table)
+int		init_philo_one(t_param *param)
 {
-	t_philo	*node;
-	t_philo	*head;
+	int	i;
 
-	number_of_philosophers--;
-	head = (t_philo *)malloc(sizeof(t_philo));
-	if (!head)
+	param->prompt_mutex = NULL;
+	param->forks = NULL;
+	param->prompt_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
+	param->forks = (t_fork *)calloc(param->number_of_philosophers,
+					sizeof(t_fork));
+	if (!param->prompt_mutex || !param->forks)
 		return (1);
-	head->id = number_of_philosophers--;
-	head->state = thinking;
-	head->last_dinner_tv = (struct timeval){0, 0};
-	head->meals_n = 0;
-	pthread_mutex_init(&head->fork, NULL);
-	head->free_fork = 1;
-	node = head;
-	while (number_of_philosophers >= 0)
+	pthread_mutex_init(param->prompt_mutex, NULL);
+	i = 0;
+	while (i < param->number_of_philosophers)
 	{
-		node->next = (t_philo *)malloc(sizeof(t_philo));
-		if (!node->next)
-			return (1);
-		node = node->next;
-		node->id = number_of_philosophers--;
-		node->state = thinking;
-		node->last_dinner_tv = (struct timeval){0, 0};
-		node->meals_n = 0;
-		pthread_mutex_init(&node->fork, NULL);
-		node->free_fork = 1;
+		pthread_mutex_init(&(param->forks + i)->fork, NULL);
+		(param->forks + i)->free_fork = 1;
+		i++;
 	}
-	node->next = head;
-	*table = head;
-	return (0);
-}
-
-void	init_ft_array()
-{
-	g_philo_actions[left_fork_taking] = take_left_fork;
-	g_philo_actions[right_fork_taking] = take_his_fork;
+	param->fed_philo_n = 0;
+	param->death = 0;
+	g_philo_actions[other_fork_taking] = take_other_fork;
+	g_philo_actions[his_fork_taking] = take_his_fork;
 	g_philo_actions[eating] = philo_eat;
 	g_philo_actions[sleeping] = philo_sleep;
 	g_philo_actions[thinking] = philo_think;
+	return (0);
 }
 
-void	print_table(t_philo *table)
+int	create_philo_table(t_philo **table, t_param *pm)
 {
-	t_philo *philo = table;
-	while (1)
+	int		id;
+	
+	*table = (t_philo *)calloc(pm->number_of_philosophers, sizeof(t_philo));
+	if (!*table)
+		return (1);
+	id = 0;
+	while (id < pm->number_of_philosophers)
 	{
-		printf("Philo id : %d\n", philo->id);
-		printf("Philo fork : %p\n", &philo->fork);
-		philo = philo->next;
+		(*table)[id].id = id;
+		(*table)[id].state = thinking;
+		(*table)[id].last_dinner_tv = (struct timeval){0, 0};
+		(*table)[id].meals_n = 0;
+		(*table)[id].sim_param = pm;
+		(*table)[id].his_fork = pm->forks + id;
+		if (id < pm->number_of_philosophers - 1)
+			(*table)[id].neighbour_fork = pm->forks + id + 1;
+		else
+			(*table)[id].neighbour_fork = pm->forks;
+		id++;
 	}
+	return (0);
 }
 
 void	destroy_simulation(t_philo **table, t_param *param)
 {
 	int		i;
-	t_philo	*tmp;
-	t_philo	*node;
 
 	pthread_mutex_destroy(param->prompt_mutex);
 	free(param->prompt_mutex);
 	param->prompt_mutex = NULL;
-	node = *table;
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{
-		tmp = node;
-		node = node->next;
-		pthread_mutex_destroy(&tmp->fork);
-		free(tmp);
+		pthread_mutex_destroy(&(param->forks[i]).fork);
 		i++;
 	}
+	free(param->forks);
+	param->forks = NULL;
+	free(*table);
 	*table = NULL;
 }
 
@@ -106,14 +103,8 @@ int main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
-	create_philo_table(param.number_of_philosophers, &table);
-	init_ft_array();
-	param.prompt_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
-	if (!param.prompt_mutex)
-		return (1);
-	param.fed_philo_n = 0;
-	param.death = 0;
-	pthread_mutex_init(param.prompt_mutex, NULL);
+	init_philo_one(&param);
+	create_philo_table(&table, &param);
 	simulate_philo_table(table, &param);
 	usleep(param.time_to_eat * TIME_FACTOR);
 	destroy_simulation(&table, &param);

@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/18 16:38:14 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/23 19:13:41 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 # define STATE_NB		5
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
-# define SLEEP_STEP		500
+# define SLEEP_STEP_US	500
 
 enum				e_philo
 {
-	right_fork_taking,
-	left_fork_taking,
+	his_fork_taking,
+	other_fork_taking,
 	eating,
 	sleeping,
 	thinking,
@@ -33,6 +33,12 @@ enum				e_philo
 };
 
 typedef pthread_mutex_t	t_mutex;
+
+typedef struct		s_fork
+{
+	t_mutex			fork;
+	int				free_fork;
+}					t_fork;
 
 typedef struct		s_param
 {
@@ -44,20 +50,20 @@ typedef struct		s_param
 	int				fed_philo_n;
 	struct timeval	begin_tv;
 	t_mutex			*prompt_mutex;
+	t_fork			*forks;
 	int				death;
 }					t_param;
 
 typedef struct		s_philo
 {
 	pthread_t		soul;
-	t_mutex			fork;
-	int				free_fork;
 	int				id;
 	enum e_philo	state;
 	struct timeval	last_dinner_tv;
 	int				meals_n;
+	t_fork			*his_fork;
+	t_fork			*neighbour_fork;
 	t_param			*sim_param;
-	struct s_philo	*next;
 }					t_philo;
 
 void				(*g_philo_actions[STATE_NB])
@@ -72,7 +78,7 @@ size_t				ft_strlen(const char *s);
 long				get_usec_from_epoch();
 int					ft_usleep(int desired_interval_ms);
 void				take_his_fork(t_philo *philo, t_param *param);
-void				take_left_fork(t_philo *philo, t_param *param);
+void				take_other_fork(t_philo *philo, t_param *param);
 void				philo_eat(t_philo *place, t_param *param);
 void				philo_sleep(t_philo *philo, t_param *param);
 void				philo_think(t_philo *philo, t_param *param);
