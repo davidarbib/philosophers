@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/22 16:01:50 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/23 11:39:31 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct		s_philo
 
 void				(*g_philo_actions[STATE_NB])
 											(t_philo *philo, t_param *param);
-t_mutex				g_test_mutex;
 void				print_state(t_philo *philo, t_mutex *prompt_mutex);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);

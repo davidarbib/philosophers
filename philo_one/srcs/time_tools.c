@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 20:26:03 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/22 16:45:11 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/23 10:26:20 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_usleep(int desired_interval_ms)
 	int time_ms;
 	
 	time_ms = 0;
-	while (i < desired_interval_ms)
+	while (time_ms < desired_interval_ms)
 	{
 		usleep(SLEEP_STEP_MS);
 		time_ms += SLEEP_STEP_MS;
