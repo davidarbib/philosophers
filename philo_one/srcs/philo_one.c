@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 15:58:18 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 20:58:03 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ void	destroy_simulation(t_philo **table, t_param *param)
 	pthread_mutex_destroy(param->death_mutex);
 	free(param->death_mutex);
 	param->death_mutex = NULL;
+	pthread_mutex_destroy(param->fed_mutex);
+	free(param->fed_mutex);
+	param->fed_mutex = NULL;
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{

@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 17:01:47 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 20:51:36 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		check_for_death(t_philo *philo, t_param *param)
 				philo->id);
 		return (1);
 	}
-
 	pthread_mutex_lock(param->fed_mutex);
 	if (param->fed_philo_n == param->number_of_philosophers)
 	{
@@ -61,7 +60,6 @@ void	*live(void *atypic_philo)
 
 	philo = (t_philo *)atypic_philo;
 	param = philo->sim_param;
-	printf("%p\n", param);
 	if (philo->id % 2)
 		ft_msleep(10, param);
 	while (!check_death_bool(param))
@@ -80,7 +78,6 @@ void	simulate_philo_table(t_philo *philos, t_param *param)
 
 	gettimeofday(&param->begin_tv, NULL);
 	i = 0;
-	printf("%p\n", param);
 	while (i < param->number_of_philosophers)
 	{
 		gettimeofday(&(philos + i)->last_dinner_tv, NULL);
