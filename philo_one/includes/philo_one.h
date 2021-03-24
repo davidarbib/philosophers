@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/23 19:13:41 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 14:25:53 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
 long				get_usec_from_epoch();
-int					ft_usleep(int desired_interval_ms);
+int					ft_msleep(int desired_interval_ms);
 void				take_his_fork(t_philo *philo, t_param *param);
 void				take_other_fork(t_philo *philo, t_param *param);
 void				philo_eat(t_philo *place, t_param *param);

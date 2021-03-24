@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/23 19:11:29 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 14:25:07 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int		check_for_death(t_philo *philo, t_param *param)
 {
+	if (param->death)
+		return (1);
 	if (get_relative_ms(philo->last_dinner_tv) > param->time_to_die)
 	{
 		philo->state = dead;
@@ -38,9 +40,9 @@ void	*live(void *atypic_philo)
 
 	philo = (t_philo *)atypic_philo;
 	param = philo->sim_param;
-	philo->last_dinner_tv = param->begin_tv;
 	if (philo->id % 2)
-		ft_usleep(100);
+		ft_msleep(1);
+	gettimeofday(&philo->last_dinner_tv, NULL);
 	while (!param->death)
 	{
 		if (check_for_death(philo, param))

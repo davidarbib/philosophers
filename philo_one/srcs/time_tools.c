@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 20:26:03 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/23 14:51:25 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 14:24:07 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		ft_usleep(int desired_interval_ms)
 }
 */
 
-int		ft_usleep(int desired_interval_ms)
+int		ft_msleep(int desired_interval_ms)
 {
 	struct timeval	ref_tv;
 	
