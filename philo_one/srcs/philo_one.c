@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/23 19:28:41 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 15:58:18 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ int		init_philo_one(t_param *param)
 {
 	int	i;
 
-	param->prompt_mutex = NULL;
+	param->death_mutex = NULL;
 	param->forks = NULL;
-	param->prompt_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
+	param->death_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
+	param->fed_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
 	param->forks = (t_fork *)calloc(param->number_of_philosophers,
 					sizeof(t_fork));
-	if (!param->prompt_mutex || !param->forks)
+	if (!param->death_mutex || !param->fed_mutex || !param->forks)
 		return (1);
-	pthread_mutex_init(param->prompt_mutex, NULL);
+	pthread_mutex_init(param->death_mutex, NULL);
+	pthread_mutex_init(param->fed_mutex, NULL);
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{
@@ -44,7 +46,7 @@ int		init_philo_one(t_param *param)
 	return (0);
 }
 
-int	create_philo_table(t_philo **table, t_param *pm)
+int		create_philo_table(t_philo **table, t_param *pm)
 {
 	int		id;
 	
@@ -73,9 +75,9 @@ void	destroy_simulation(t_philo **table, t_param *param)
 {
 	int		i;
 
-	pthread_mutex_destroy(param->prompt_mutex);
-	free(param->prompt_mutex);
-	param->prompt_mutex = NULL;
+	pthread_mutex_destroy(param->death_mutex);
+	free(param->death_mutex);
+	param->death_mutex = NULL;
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{

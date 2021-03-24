@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 14:25:53 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 16:17:06 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ typedef struct		s_param
 	int				number_of_times_each_philosophers_must_eat;
 	int				fed_philo_n;
 	struct timeval	begin_tv;
-	t_mutex			*prompt_mutex;
+	t_mutex			*death_mutex;
+	t_mutex			*fed_mutex;
 	t_fork			*forks;
 	int				death;
 }					t_param;
@@ -76,7 +77,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
 long				get_usec_from_epoch();
-int					ft_msleep(int desired_interval_ms);
+int					ft_msleep(int desired_interval_ms, t_param *param);
 void				take_his_fork(t_philo *philo, t_param *param);
 void				take_other_fork(t_philo *philo, t_param *param);
 void				philo_eat(t_philo *place, t_param *param);
@@ -88,5 +89,7 @@ void				*live(void *atypic_philo);
 void				launch_simulation(t_philo *philo, t_param *param);
 int					parse_args(int ac, char **av, t_param *param);
 int					check_for_death(t_philo *philo, t_param *param);
+void				set_death_bool(t_param *param);
+int					check_death_bool(t_param *param);
 
 #endif
