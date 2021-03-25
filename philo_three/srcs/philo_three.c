@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 12:03:10 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 16:23:32 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ int		init_philo_one(t_param *param)
 	param->forks_nb = param->number_of_philosophers;
 	param->fed_philo_n = 0;
 	param->death = 0;
+	param->pids = (pid_t *)calloc(param->number_of_philosophers,
+										sizeof(pid_t));
+	if (!param->pids)
+		return (1);
 	return (0);
 }
 

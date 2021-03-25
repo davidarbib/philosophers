@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 11:49:00 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 16:24:20 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <errno.h>
 
 # define STATE_NB		5
@@ -53,11 +56,11 @@ typedef struct		s_param
 	sem_t			*death_sem;
 	int				forks_nb;
 	int				death;
+	pid_t			*pids;
 }					t_param;
 
 typedef struct		s_philo
 {
-	pthread_t		soul;
 	int				id;
 	enum e_philo	state;
 	struct timeval	last_dinner_tv;

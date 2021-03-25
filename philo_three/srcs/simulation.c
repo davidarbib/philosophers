@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 12:05:57 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 16:24:02 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ void	simulate_philo_table(t_philo *philos, t_param *param)
 	while (i < param->number_of_philosophers)
 	{
 		gettimeofday(&(philos + i)->last_dinner_tv, NULL);
-		pthread_create(&(philos[i].soul), NULL, live, philos + i);
+		param->pids[i] = fork();
+		if (param->pids[i] == 0)
+			live(philos + i);
 		i++;
 	}
 	usleep(500);
@@ -89,14 +91,17 @@ void	simulate_philo_table(t_philo *philos, t_param *param)
 	while (1)
 	{
 		if (check_for_death(philos + i, param))
+		{
+			//kill(pids[i], KILL);
 			break ;
+		}
 		i++;
 		i %= param->number_of_philosophers;
 	}
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{
-		pthread_join(philos[i].soul, NULL);
+		waitpid(param->pids[i]);
 		i++;
 	}
 }
