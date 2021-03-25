@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 00:26:39 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 11:02:29 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+# include <errno.h>
 
 # define STATE_NB		5
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
 # define SLEEP_STEP_US	500
-# define FORKS_NAME		"/forks"
-# define FED_NAME		"/fed"
-# define DEATH_NAME		"/death"
+# define FORKS_NAME		"/forks_sem"
+# define FED_NAME		"/fed_sem"
+# define DEATH_NAME		"/death_sem"
 
 enum				e_philo
 {

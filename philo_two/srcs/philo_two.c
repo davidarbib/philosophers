@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 00:57:33 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 11:31:07 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,14 @@ int		init_philo_one(t_param *param)
 	param->death_sem = NULL;
 	param->forks = NULL;
 	param->fed_sem = NULL; 
-	param->forks = sem_open(FORKS_NAME, O_CREAT);
-		perror("philo_two");
+	param->forks = sem_open(FORKS_NAME, O_CREAT | O_EXCL, S_IRWXU,
+							param->number_of_philosophers);
 	i = 0;
-	param->fed_sem = sem_open(FED_NAME, O_CREAT);
-		perror("philo_two");
-	param->death_sem = sem_open(DEATH_NAME, O_CREAT);
-		perror("philo_two");
+	param->fed_sem = sem_open(FED_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
+	param->death_sem = sem_open(DEATH_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (param->death_sem == SEM_FAILED || param->fed_sem == SEM_FAILED 
 		|| param->forks == SEM_FAILED)
 		return (1);
-	while (i < param->number_of_philosophers)
-	{
-		sem_post(param->forks);
-		i++;
-	}
-	sem_post(param->fed_sem);
-	sem_post(param->death_sem);
 	param->forks_nb = param->number_of_philosophers;
 	param->fed_philo_n = 0;
 	param->death = 0;
@@ -74,7 +65,7 @@ int		create_philo_table(t_philo **table, t_param *pm)
 	return (0);
 }
 
-void	destroy_simulation(t_philo **table, t_param *param)
+void	destroy_semaphores(t_param *param)
 {
 	sem_unlink(DEATH_NAME);
 	sem_unlink(FED_NAME);
@@ -82,6 +73,11 @@ void	destroy_simulation(t_philo **table, t_param *param)
 	sem_close(param->death_sem);
 	sem_close(param->fed_sem);
 	sem_close(param->forks);
+}
+
+void	destroy_simulation(t_philo **table, t_param *param)
+{
+	destroy_semaphores(param);
 	free(*table);
 	*table = NULL;
 }
@@ -103,6 +99,7 @@ int		main(int ac, char **av)
 	}
 	if (init_philo_one(&param))
 	{
+		destroy_semaphores(&param);
 		perror("philo_two");
 		return (1);
 	}
