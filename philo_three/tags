@@ -1,0 +1,81 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BLUE	Makefile	/^BLUE = 		'\\033[0;34m'$/;"	m
+CC	Makefile	/^CC = clang$/;"	m
+CFLAGS	Makefile	/^CFLAGS= -Wall -Wextra -Werror  $/;"	m
+GREEN	Makefile	/^GREEN = 	'\\033[0;32m'$/;"	m
+INC	Makefile	/^INC = $(addprefix -I, $(INC_DIRS))$/;"	m
+INC_DIRS	Makefile	/^INC_DIRS = includes \\$/;"	m
+LIBS	Makefile	/^LIBS = -pthread$/;"	m
+LIGHTBLUE	Makefile	/^LIGHTBLUE = '\\033[1;34m'$/;"	m
+MAGENTA	Makefile	/^MAGENTA = 	'\\033[0;35m'$/;"	m
+MESSAGE_LEN	includes/philo_one.h	20;"	d
+NAME	Makefile	/^NAME = philo_one$/;"	m
+OBJ	Makefile	/^OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)$/;"	m
+OBJ_DIR	Makefile	/^OBJ_DIR = .\/objs\/$/;"	m
+ORANGE	Makefile	/^ORANGE = 	'\\033[0;33m'$/;"	m
+PHILO_ONE_H	includes/philo_one.h	14;"	d
+RED	Makefile	/^RED = 		'\\033[0;31m'$/;"	m
+RESET	Makefile	/^RESET = 	'\\033[0m'$/;"	m
+SLEEP_STEP	includes/philo_one.h	22;"	d
+SRC	Makefile	/^SRC = philo_one.c \\$/;"	m
+SRC_DIR	Makefile	/^SRC_DIR = .\/srcs\/$/;"	m
+STATE_NB	includes/philo_one.h	19;"	d
+TIME_FACTOR	includes/philo_one.h	21;"	d
+YELLOW	Makefile	/^YELLOW = 	'\\033[1;33m'$/;"	m
+begin_tv	includes/philo_one.h	/^	struct timeval	begin_tv;$/;"	m	struct:s_philo	typeref:struct:s_philo::timeval
+check_arg	srcs/philo_one.c	/^int check_arg(char *arg) $/;"	f
+check_death	srcs/philo_one.c	/^int		check_death(t_philo *philo, int	time_to_die)$/;"	f
+create_philo_table	srcs/philo_one.c	/^int	create_philo_table(int number_of_philosophers, t_philo **table)$/;"	f
+dead	includes/philo_one.h	/^	dead$/;"	e	enum:e_philo
+death	includes/philo_one.h	/^	int				death;$/;"	m	struct:s_param
+e_philo	includes/philo_one.h	/^enum				e_philo$/;"	g
+eating	includes/philo_one.h	/^	eating,$/;"	e	enum:e_philo
+fork	includes/philo_one.h	/^	t_mutex			fork;$/;"	m	struct:s_philo
+ft_atoi	srcs/tools.c	/^int		ft_atoi(const char *str)$/;"	f
+ft_isdigit	srcs/tools.c	/^int		ft_isdigit(int c)$/;"	f
+ft_ltobuffer	srcs/print.c	/^int		ft_ltobuffer(unsigned long n, char *buf)$/;"	f
+ft_memmove	srcs/print.c	/^void	*ft_memmove(void *dst, const void *src, size_t len)$/;"	f
+ft_putnbr_fd	srcs/tools.c	/^void	ft_putnbr_fd(long n, int fd)$/;"	f
+ft_strcmp	srcs/tools.c	/^int		ft_strcmp(const char *s1, const char *s2)$/;"	f
+ft_strlen	srcs/tools.c	/^size_t	ft_strlen(const char *s)$/;"	f
+ft_usleep	srcs/time_tools.c	/^int		ft_usleep(int desired_interval_ms)$/;"	f
+g_philo_actions	includes/philo_one.h	/^void				(*g_philo_actions[STATE_NB])$/;"	v
+get_relative_ms	srcs/time_tools.c	/^long	get_relative_ms(struct timeval begin_tv)$/;"	f
+get_usec_from_epoch	srcs/time_tools.c	/^long	get_usec_from_epoch()$/;"	f
+id	includes/philo_one.h	/^	int				id;$/;"	m	struct:s_philo
+init_ft_array	srcs/philo_one.c	/^void	init_ft_array()$/;"	f
+last_dinner_tv	includes/philo_one.h	/^	struct timeval	last_dinner_tv;$/;"	m	struct:s_philo	typeref:struct:s_philo::timeval
+left_fork_taking	includes/philo_one.h	/^	left_fork_taking,$/;"	e	enum:e_philo
+live	srcs/philo_one.c	/^void	*live(void *atypic_philo)$/;"	f
+main	srcs/philo_one.c	/^int main(int ac, char **av)$/;"	f
+next	includes/philo_one.h	/^	struct s_philo	*next;$/;"	m	struct:s_philo	typeref:struct:s_philo::s_philo
+number_of_philosophers	includes/philo_one.h	/^	int				number_of_philosophers;$/;"	m	struct:s_param
+number_of_times_each_philosophers_must_eat	includes/philo_one.h	/^	int				number_of_times_each_philosophers_must_eat;$/;"	m	struct:s_param
+parse_args	srcs/philo_one.c	/^int	parse_args(int ac, char **av, t_param *param)$/;"	f
+philo_eat	srcs/actions.c	/^void	philo_eat(t_philo *philo, t_param *param)$/;"	f
+philo_sleep	srcs/actions.c	/^void	philo_sleep(t_philo *philo, t_param *param)$/;"	f
+philo_think	srcs/actions.c	/^void	philo_think(t_philo *philo, t_param *param)$/;"	f
+print_state	srcs/print.c	/^void	print_state(t_philo *philo, t_mutex *prompt_mutex)$/;"	f
+prompt_mutex	includes/philo_one.h	/^	t_mutex			prompt_mutex;$/;"	m	struct:s_param
+right_fork_taking	includes/philo_one.h	/^	right_fork_taking,$/;"	e	enum:e_philo
+s_param	includes/philo_one.h	/^typedef struct		s_param$/;"	s
+s_philo	includes/philo_one.h	/^typedef struct		s_philo$/;"	s
+sim_param	includes/philo_one.h	/^	t_param			*sim_param;$/;"	m	struct:s_philo
+simulate_philo_table	srcs/philo_one.c	/^void	simulate_philo_table(t_philo *table, t_param *param)$/;"	f
+sleeping	includes/philo_one.h	/^	sleeping,$/;"	e	enum:e_philo
+soul	includes/philo_one.h	/^	pthread_t		soul;$/;"	m	struct:s_philo
+state	includes/philo_one.h	/^	enum e_philo	state;$/;"	m	struct:s_philo	typeref:enum:s_philo::e_philo
+t_mutex	includes/philo_one.h	/^typedef pthread_mutex_t	t_mutex;$/;"	t
+t_param	includes/philo_one.h	/^}					t_param;$/;"	t	typeref:struct:s_param
+t_philo	includes/philo_one.h	/^}					t_philo;$/;"	t	typeref:struct:s_philo
+take_his_fork	srcs/actions.c	/^void	take_his_fork(t_philo *philo, t_param *param)$/;"	f
+take_left_fork	srcs/actions.c	/^void	take_left_fork(t_philo *philo, t_param *param)$/;"	f
+thinking	includes/philo_one.h	/^	thinking,$/;"	e	enum:e_philo
+time_to_die	includes/philo_one.h	/^	int				time_to_die;$/;"	m	struct:s_param
+time_to_eat	includes/philo_one.h	/^	int				time_to_eat;$/;"	m	struct:s_param
+time_to_sleep	includes/philo_one.h	/^	int				time_to_sleep;$/;"	m	struct:s_param

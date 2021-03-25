@@ -6,7 +6,7 @@
 #    By: darbib <darbib@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/03 12:23:24 by darbib            #+#    #+#              #
-#    Updated: 2021/03/25 11:55:34 by darbib           ###   ########.fr        #
+#    Updated: 2021/03/25 12:02:00 by darbib           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,7 @@ MAGENTA = 	'\033[0;35m'
 RESET = 	'\033[0m'
 CHECK =		'\xE2\x9C\x94'
 
-
-
-NAME = philo_two
+NAME = philo_three
 CFLAGS= -Wall -Wextra -Werror  
 CC = clang
 LIBS = -pthread
@@ -48,9 +46,9 @@ INC_DIRS = includes \
 
 INC = $(addprefix -I, $(INC_DIRS))
 
-HEADERS = philo_two.h
+HEADERS = philo_three.h
 
-SRC = philo_two.c \
+SRC = philo_three.c \
 	  tools.c \
 	  print.c \
 	  time_tools.c \

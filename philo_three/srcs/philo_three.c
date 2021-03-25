@@ -6,12 +6,12 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 11:57:06 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 12:03:10 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "philo_two.h"
+#include "philo_three.h"
 #include <stdlib.h>
 #include <unistd.h>
 
