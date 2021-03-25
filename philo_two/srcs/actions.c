@@ -6,11 +6,11 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:03:15 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 00:35:25 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 #include <unistd.h>
 #include <stdio.h>
 
@@ -27,21 +27,21 @@ void	philo_eat(t_philo *philo, t_param *param)
 	if (param->number_of_times_each_philosophers_must_eat > 0
 		&& philo->meals_n == param->number_of_times_each_philosophers_must_eat)
 	{
-		pthread_mutex_lock(param->fed_mutex);
+		sem_wait(param->fed_sem);
 		param->fed_philo_n++;
-		pthread_mutex_unlock(param->fed_mutex);
+		sem_post(param->fed_sem);
 	}
 }
 
 void	take_his_fork(t_philo *philo, t_param *param)
 {
-	while (!philo->his_fork->free_fork)
+	while (param->forks_nb == 0)
 	{
 		if (check_death_bool(param))
 			return ;
 	}
-	pthread_mutex_lock(&philo->his_fork->fork);
-	philo->his_fork->free_fork = 0;
+	sem_wait(param->forks);
+	param->forks_nb--;
 	if (!check_death_bool(param))
 	{
 		printf("%ld %d has taken a fork\n", get_relative_ms(param->begin_tv),
@@ -51,13 +51,13 @@ void	take_his_fork(t_philo *philo, t_param *param)
 
 void	take_other_fork(t_philo *philo, t_param *param)
 {
-	while (!philo->neighbour_fork->free_fork)
+	while (param->forks_nb == 0)
 	{
 		if (check_death_bool(param))
 			return ;
 	}
-	pthread_mutex_lock(&philo->neighbour_fork->fork);
-	philo->neighbour_fork->free_fork = 0;
+	sem_wait(param->forks);
+	param->forks_nb--;
 	if (!check_death_bool(param))
 	{
 		printf("%ld %d has taken a fork\n", get_relative_ms(param->begin_tv),
@@ -67,10 +67,10 @@ void	take_other_fork(t_philo *philo, t_param *param)
 
 void	philo_sleep(t_philo *philo, t_param *param)
 {
-	pthread_mutex_unlock(&philo->his_fork->fork);
-	philo->his_fork->free_fork = 1;
-	pthread_mutex_unlock(&philo->neighbour_fork->fork);
-	philo->neighbour_fork->free_fork = 1;
+	sem_post(param->forks);
+	param->forks_nb++;
+	sem_post(param->forks);
+	param->forks_nb++;
 	if (!check_death_bool(param))
 	{
 		printf("%ld %d is sleeping\n", get_relative_ms(param->begin_tv),

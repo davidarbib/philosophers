@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:29:41 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 00:26:39 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <semaphore.h>
 
 # define STATE_NB		5
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
 # define SLEEP_STEP_US	500
+# define FORKS_NAME		"/forks"
+# define FED_NAME		"/fed"
+# define DEATH_NAME		"/death"
 
 enum				e_philo
 {
@@ -32,14 +38,6 @@ enum				e_philo
 	dead
 };
 
-typedef pthread_mutex_t	t_mutex;
-
-typedef struct		s_fork
-{
-	t_mutex			fork;
-	int				free_fork;
-}					t_fork;
-
 typedef struct		s_param
 {
 	int				number_of_philosophers;
@@ -49,9 +47,10 @@ typedef struct		s_param
 	int				number_of_times_each_philosophers_must_eat;
 	int				fed_philo_n;
 	struct timeval	begin_tv;
-	t_mutex			*death_mutex;
-	t_mutex			*fed_mutex;
-	t_fork			*forks;
+	sem_t			*fed_sem;
+	sem_t			*forks;
+	sem_t			*death_sem;			
+	int				forks_nb;
 	int				death;
 }					t_param;
 
@@ -62,15 +61,11 @@ typedef struct		s_philo
 	enum e_philo	state;
 	struct timeval	last_dinner_tv;
 	int				meals_n;
-	t_fork			*his_fork;
-	t_fork			*neighbour_fork;
 	t_param			*sim_param;
 }					t_philo;
 
 void				(*g_philo_actions[STATE_NB])
 											(t_philo *philo, t_param *param);
-t_mutex				g_test_mutex;
-void				print_state(t_philo *philo, t_mutex *prompt_mutex);
 void				ft_putnbr_fd(long n, int fd);
 int					ft_atoi(const char *str);
 int					ft_strcmp(const char *s1, const char *s2);

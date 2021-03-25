@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 20:26:03 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:08:00 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 22:43:53 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "philo_one.h"
+#include "philo_two.h"
 
 long	get_usec_from_epoch(void)
 {

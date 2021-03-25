@@ -6,14 +6,14 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:10:04 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 22:43:24 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "philo_one.h"
+#include "philo_two.h"
 #include <stdio.h>
 
 void	*ft_memmove(void *dst, const void *src, size_t len)

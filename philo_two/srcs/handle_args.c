@@ -6,11 +6,11 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:48:11 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:09:07 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/24 22:48:28 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		check_arg(char *arg)
 {
@@ -42,6 +42,8 @@ int		parse_args(int ac, char **av, t_param *param)
 	if (!success)
 		return (1);
 	param->number_of_philosophers = ft_atoi(av[1]);
+	if (param->number_of_philosophers < 2)
+		return (1);
 	param->time_to_die = ft_atoi(av[2]);
 	param->time_to_eat = ft_atoi(av[3]);
 	param->time_to_sleep = ft_atoi(av[4]);

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:30:38 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 00:57:33 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "philo_one.h"
+#include "philo_two.h"
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -19,23 +19,27 @@ int		init_philo_one(t_param *param)
 {
 	int	i;
 
-	param->death_mutex = NULL;
+	param->death_sem = NULL;
 	param->forks = NULL;
-	param->death_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
-	param->fed_mutex = (t_mutex *)calloc(1, sizeof(t_mutex));
-	param->forks = (t_fork *)calloc(param->number_of_philosophers,
-					sizeof(t_fork));
-	if (!param->death_mutex || !param->fed_mutex || !param->forks)
-		return (1);
-	pthread_mutex_init(param->death_mutex, NULL);
-	pthread_mutex_init(param->fed_mutex, NULL);
+	param->fed_sem = NULL; 
+	param->forks = sem_open(FORKS_NAME, O_CREAT);
+		perror("philo_two");
 	i = 0;
+	param->fed_sem = sem_open(FED_NAME, O_CREAT);
+		perror("philo_two");
+	param->death_sem = sem_open(DEATH_NAME, O_CREAT);
+		perror("philo_two");
+	if (param->death_sem == SEM_FAILED || param->fed_sem == SEM_FAILED 
+		|| param->forks == SEM_FAILED)
+		return (1);
 	while (i < param->number_of_philosophers)
 	{
-		pthread_mutex_init(&(param->forks + i)->fork, NULL);
-		(param->forks + i)->free_fork = 1;
+		sem_post(param->forks);
 		i++;
 	}
+	sem_post(param->fed_sem);
+	sem_post(param->death_sem);
+	param->forks_nb = param->number_of_philosophers;
 	param->fed_philo_n = 0;
 	param->death = 0;
 	return (0);
@@ -65,11 +69,6 @@ int		create_philo_table(t_philo **table, t_param *pm)
 		(*table)[id].last_dinner_tv = (struct timeval){0, 0};
 		(*table)[id].meals_n = 0;
 		(*table)[id].sim_param = pm;
-		(*table)[id].his_fork = pm->forks + id;
-		if (id < pm->number_of_philosophers - 1)
-			(*table)[id].neighbour_fork = pm->forks + id + 1;
-		else
-			(*table)[id].neighbour_fork = pm->forks;
 		id++;
 	}
 	return (0);
@@ -77,22 +76,12 @@ int		create_philo_table(t_philo **table, t_param *pm)
 
 void	destroy_simulation(t_philo **table, t_param *param)
 {
-	int		i;
-
-	pthread_mutex_destroy(param->death_mutex);
-	free(param->death_mutex);
-	param->death_mutex = NULL;
-	pthread_mutex_destroy(param->fed_mutex);
-	free(param->fed_mutex);
-	param->fed_mutex = NULL;
-	i = 0;
-	while (i < param->number_of_philosophers)
-	{
-		pthread_mutex_destroy(&(param->forks[i]).fork);
-		i++;
-	}
-	free(param->forks);
-	param->forks = NULL;
+	sem_unlink(DEATH_NAME);
+	sem_unlink(FED_NAME);
+	sem_unlink(FORKS_NAME);
+	sem_close(param->death_sem);
+	sem_close(param->fed_sem);
+	sem_close(param->forks);
 	free(*table);
 	*table = NULL;
 }
@@ -112,7 +101,11 @@ int		main(int ac, char **av)
 		write(2, "Error arguments\n", 16);
 		return (1);
 	}
-	init_philo_one(&param);
+	if (init_philo_one(&param))
+	{
+		perror("philo_two");
+		return (1);
+	}
 	init_ft_array();
 	create_philo_table(&table, &param);
 	simulate_philo_table(table, &param);

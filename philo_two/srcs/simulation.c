@@ -6,11 +6,11 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/24 22:09:34 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/25 00:36:21 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 #include <unistd.h>
 
 int		check_for_death(t_philo *philo, t_param *param)
@@ -25,14 +25,14 @@ int		check_for_death(t_philo *philo, t_param *param)
 				philo->id);
 		return (1);
 	}
-	pthread_mutex_lock(param->fed_mutex);
+	sem_wait(param->fed_sem);
 	if (param->fed_philo_n == param->number_of_philosophers)
 	{
-		pthread_mutex_unlock(param->fed_mutex);
+		sem_post(param->fed_sem);
 		set_death_bool(param);
 		return (1);
 	}
-	pthread_mutex_unlock(param->fed_mutex);
+	sem_post(param->fed_sem);
 	return (0);
 }
 
@@ -40,17 +40,17 @@ int		check_death_bool(t_param *param)
 {
 	int death;
 
-	pthread_mutex_lock(param->death_mutex);
+	sem_wait(param->death_sem);
 	death = param->death;
-	pthread_mutex_unlock(param->death_mutex);
+	sem_post(param->death_sem);
 	return (death);
 }
 
 void	set_death_bool(t_param *param)
 {
-	pthread_mutex_lock(param->death_mutex);
+	sem_wait(param->death_sem);
 	param->death = 1;
-	pthread_mutex_unlock(param->death_mutex);
+	sem_post(param->death_sem);
 }
 
 void	*live(void *atypic_philo)
