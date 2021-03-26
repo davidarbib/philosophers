@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 12:05:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/26 15:24:14 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ void	philo_eat(t_philo *philo, t_param *param)
 
 void	take_his_fork(t_philo *philo, t_param *param)
 {
+	printf("forks nb before take his fork : %d\n", param->forks_nb);
 	while (param->forks_nb == 0)
 	{
-		if (check_death_bool(param))
-			return ;
+		if (check_for_death(philo, param))
+			break ;
 	}
 	sem_wait(param->forks);
 	param->forks_nb--;
@@ -53,8 +54,8 @@ void	take_other_fork(t_philo *philo, t_param *param)
 {
 	while (param->forks_nb == 0)
 	{
-		if (check_death_bool(param))
-			return ;
+		if (check_for_death(philo, param))
+			break ;
 	}
 	sem_wait(param->forks);
 	param->forks_nb--;

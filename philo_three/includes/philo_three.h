@@ -6,12 +6,12 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 16:24:20 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/26 15:03:42 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <pthread.h>
 # include <sys/time.h>
@@ -83,7 +83,6 @@ void				philo_eat(t_philo *place, t_param *param);
 void				philo_sleep(t_philo *philo, t_param *param);
 void				philo_think(t_philo *philo, t_param *param);
 long				get_relative_ms(struct timeval begin_tv);
-void				simulate_philo_table(t_philo *table, t_param *param);
 void				*live(void *atypic_philo);
 void				launch_simulation(t_philo *philo, t_param *param);
 int					parse_args(int ac, char **av, t_param *param);
@@ -92,5 +91,6 @@ void				set_death_bool(t_param *param);
 int					check_death_bool(t_param *param);
 void				destroy_semaphores(t_param *param);
 void				destroy_simulation(t_philo **table, t_param *param);
+void				simulate_philo_table(t_param *param);
 
 #endif

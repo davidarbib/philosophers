@@ -6,12 +6,13 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 16:24:02 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/26 15:22:57 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 int		check_for_death(t_philo *philo, t_param *param)
 {
@@ -25,6 +26,7 @@ int		check_for_death(t_philo *philo, t_param *param)
 				philo->id);
 		return (1);
 	}
+	/*
 	sem_wait(param->fed_sem);
 	if (param->fed_philo_n == param->number_of_philosophers)
 	{
@@ -33,6 +35,7 @@ int		check_for_death(t_philo *philo, t_param *param)
 		return (1);
 	}
 	sem_post(param->fed_sem);
+	*/
 	return (0);
 }
 
@@ -64,6 +67,8 @@ void	*live(void *atypic_philo)
 		ft_msleep(10, param);
 	while (!check_death_bool(param))
 	{
+		if (check_for_death(philo, param))
+			break ;
 		g_philo_actions[philo->state](philo, param);
 		philo->state++;
 		if (philo->state == STATE_NB)
@@ -72,36 +77,37 @@ void	*live(void *atypic_philo)
 	return (NULL);
 }
 
-void	simulate_philo_table(t_philo *philos, t_param *param)
+void	simulate_philo_table(t_param *param)
 {
 	int i;
+	int	status;
+	t_philo	philo;
 
+	printf("forks nb : %d\n", param->forks_nb);
 	gettimeofday(&param->begin_tv, NULL);
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{
-		gettimeofday(&(philos + i)->last_dinner_tv, NULL);
 		param->pids[i] = fork();
 		if (param->pids[i] == 0)
-			live(philos + i);
-		i++;
-	}
-	usleep(500);
-	i = 0;
-	while (1)
-	{
-		if (check_for_death(philos + i, param))
 		{
-			//kill(pids[i], KILL);
-			break ;
+			free(param->pids);
+			philo.id = i;
+			philo.state = thinking;
+			gettimeofday(&philo.last_dinner_tv, NULL);
+			philo.meals_n = 0;
+			philo.sim_param = param;
+			live(&philo);
+			exit(0);
 		}
 		i++;
-		i %= param->number_of_philosophers;
 	}
+	//usleep(500);
+	waitpid(-1, &status, WUNTRACED);
 	i = 0;
 	while (i < param->number_of_philosophers)
 	{
-		waitpid(param->pids[i]);
+		kill(param->pids[i], SIGKILL);
 		i++;
 	}
 }
