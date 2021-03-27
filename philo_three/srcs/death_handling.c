@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 13:27:57 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 16:40:45 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 00:47:57 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int		check_for_death(t_philo *philo, t_param *param)
 		return (1);
 	if (get_relative_ms(philo->last_dinner_tv) > param->time_to_die)
 	{
-		philo->state = dead;
-		set_death_bool(param);
+		sem_wait(param->death_sem);
 		memset(philo->buf, 0, MESSAGE_LEN);
 		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
 		philo->buf[ret] = ' ';

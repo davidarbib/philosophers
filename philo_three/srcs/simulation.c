@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 14:46:03 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 00:47:44 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	*supervise(void *atypic_philo)
 {
 	t_philo	*philo;
 	t_param	*param;
+	int		i;
 	
 	philo = (t_philo *)atypic_philo;
 	param = philo->sim_param;
@@ -25,6 +26,12 @@ void	*supervise(void *atypic_philo)
 	{
 		if (check_for_death(philo, param))
 			break ;
+	}
+	i = 0;
+	while (i < param->number_of_philosophers)
+	{
+		sem_post(param->fed_sem);
+		i++;
 	}
 	exit(0);
 }

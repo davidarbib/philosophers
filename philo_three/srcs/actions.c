@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 16:28:06 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 00:08:45 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,14 @@ void	philo_eat(t_philo *philo, t_param *param)
 {
 	int ret;
 
-	if (!check_death_bool(param))
-	{
-		memset(philo->buf, 0, MESSAGE_LEN);
-		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
-		philo->buf[ret] = ' ';
-		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, EAT_MSG, EAT_MSG_LEN);  
-		write(1, philo->buf, ret + EAT_MSG_LEN);
-	}
+	sem_wait(param->death_sem);
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, EAT_MSG, EAT_MSG_LEN);  
+	write(1, philo->buf, ret + EAT_MSG_LEN);
+	sem_post(param->death_sem);
 	gettimeofday(&philo->last_dinner_tv, NULL);
 	ft_msleep(param->time_to_eat, param);
 	philo->meals_n++;
@@ -43,44 +42,46 @@ void	take_his_fork(t_philo *philo, t_param *param)
 {
 	int ret;
 
+	/*
 	while (param->forks_nb == 0)
 	{
 		if (check_for_death(philo, param))
 			break ;
 	}
+	*/
 	sem_wait(param->forks);
-	param->forks_nb--;
-	if (!check_death_bool(param))
-	{
-		memset(philo->buf, 0, MESSAGE_LEN);
-		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
-		philo->buf[ret] = ' ';
-		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, FORK_MSG, FORK_MSG_LEN);  
-		write(1, philo->buf, ret + FORK_MSG_LEN);
-	}
+	//param->forks_nb--;
+	sem_wait(param->death_sem);
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, FORK_MSG, FORK_MSG_LEN);  
+	write(1, philo->buf, ret + FORK_MSG_LEN);
+	sem_post(param->death_sem);
 }
 
 void	take_other_fork(t_philo *philo, t_param *param)
 {
 	int ret;
 
+	/*
 	while (param->forks_nb == 0)
 	{
 		if (check_for_death(philo, param))
 			break ;
 	}
+	*/
 	sem_wait(param->forks);
-	param->forks_nb--;
-	if (!check_death_bool(param))
-	{
-		memset(philo->buf, 0, MESSAGE_LEN);
-		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
-		philo->buf[ret] = ' ';
-		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, FORK_MSG, FORK_MSG_LEN);  
-		write(1, philo->buf, ret + 18);
-	}
+	//param->forks_nb--;
+	sem_wait(param->death_sem);
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, FORK_MSG, FORK_MSG_LEN);  
+	write(1, philo->buf, ret + 18);
+	sem_post(param->death_sem);
 }
 
 void	philo_sleep(t_philo *philo, t_param *param)
@@ -91,15 +92,14 @@ void	philo_sleep(t_philo *philo, t_param *param)
 	param->forks_nb++;
 	sem_post(param->forks);
 	param->forks_nb++;
-	if (!check_death_bool(param))
-	{
-		memset(philo->buf, 0, MESSAGE_LEN);
-		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
-		philo->buf[ret] = ' ';
-		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, SLEEP_MSG, SLEEP_MSG_LEN);  
-		write(1, philo->buf, ret + SLEEP_MSG_LEN);
-	}
+	sem_wait(param->death_sem);
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, SLEEP_MSG, SLEEP_MSG_LEN);  
+	write(1, philo->buf, ret + SLEEP_MSG_LEN);
+	sem_post(param->death_sem);
 	ft_msleep(param->time_to_sleep, param);
 }
 
@@ -107,13 +107,12 @@ void	philo_think(t_philo *philo, t_param *param)
 {
 	int ret;
 
-	if (!check_death_bool(param))
-	{
-		memset(philo->buf, 0, MESSAGE_LEN);
-		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
-		philo->buf[ret] = ' ';
-		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, THINK_MSG, THINK_MSG_LEN);  
-		write(1, philo->buf, ret + THINK_MSG_LEN);
-	}
+	sem_wait(param->death_sem);
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, THINK_MSG, THINK_MSG_LEN);  
+	write(1, philo->buf, ret + THINK_MSG_LEN);
+	sem_post(param->death_sem);
 }

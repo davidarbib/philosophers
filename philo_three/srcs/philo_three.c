@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 16:27:10 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 00:36:11 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ int		init_philo_one(t_param *param)
 	param->death_sem = NULL;
 	param->forks = NULL;
 	param->fed_sem = NULL;
+//	param->prompt_sem = NULL;
 	sem_unlink(DEATH_NAME);
 	sem_unlink(FED_NAME);
 	sem_unlink(FORKS_NAME);
+//	sem_unlink(PROMPT_NAME);
 	param->forks = sem_open(FORKS_NAME, O_CREAT | O_EXCL, S_IRWXU,
 							param->number_of_philosophers);
 	i = 0;
 	param->fed_sem = sem_open(FED_NAME, O_CREAT | O_EXCL, S_IRWXU, 0);
 	param->death_sem = sem_open(DEATH_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
+//	param->prompt_sem = sem_open(DEATH_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (param->death_sem == SEM_FAILED || param->fed_sem == SEM_FAILED
 		|| param->forks == SEM_FAILED)
 		return (1);
@@ -74,7 +77,7 @@ int		main(int ac, char **av)
 	}
 	init_ft_array();
 	simulate_philo_table(&param);
-	usleep(param.time_to_eat * TIME_FACTOR);
+	free(param.pids);
 	destroy_semaphores(&param);
 	return (0);
 }

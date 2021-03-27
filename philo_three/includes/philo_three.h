@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 16:38:27 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/27 23:52:45 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define FORKS_NAME		"/forks_sem"
 # define FED_NAME		"/fed_sem"
 # define DEATH_NAME		"/death_sem"
+# define PROMPT_NAME	"/prompt_sem"
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
 # define SLEEP_STEP_MS	10
@@ -66,6 +67,7 @@ typedef struct		s_param
 	int				fed_philo_n;
 	struct timeval	begin_tv;
 	sem_t			*fed_sem;
+	sem_t			*prompt_sem;
 	sem_t			*forks;
 	sem_t			*death_sem;
 	int				forks_nb;
