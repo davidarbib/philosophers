@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/26 15:01:16 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/27 13:21:46 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ int		init_philo_one(t_param *param)
 	param->death_sem = NULL;
 	param->forks = NULL;
 	param->fed_sem = NULL;
+	sem_unlink(DEATH_NAME);
+	sem_unlink(FED_NAME);
+	sem_unlink(FORKS_NAME);
 	param->forks = sem_open(FORKS_NAME, O_CREAT | O_EXCL, S_IRWXU,
 							param->number_of_philosophers);
 	i = 0;

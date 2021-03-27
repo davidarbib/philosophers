@@ -6,7 +6,7 @@
 #    By: darbib <darbib@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/03 12:23:24 by darbib            #+#    #+#              #
-#    Updated: 2021/03/25 12:02:00 by darbib           ###   ########.fr        #
+#    Updated: 2021/03/27 13:38:18 by darbib           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,8 @@ SRC = philo_three.c \
 	  actions.c \
 	  simulation.c \
 	  destroy.c \
-	  handle_args.c
+	  handle_args.c \
+	  death_handling.c
 
 # ------------------------------------------------------------------------------
 
