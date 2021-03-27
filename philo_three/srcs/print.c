@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 12:05:01 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/27 16:37:30 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-int		ft_ltobuffer(unsigned long n, char *buf)
+int		ft_ltobuffer(unsigned long n, unsigned char *buf)
 {
 	size_t	i;
 	char	tmp;
