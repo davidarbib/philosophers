@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/28 16:48:56 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 17:34:24 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,7 @@ void				destroy_simulation(t_philo **table, t_param *param);
 void				simulate_philo_table(t_param *param);
 int					ft_ltobuffer(unsigned long n, unsigned char *buf);
 void				*ft_memmove(void *dst, const void *src, size_t len);
+void				print_actions(t_philo *philo, t_param *param, char *message,
+					size_t len);
 
 #endif

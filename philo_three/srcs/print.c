@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 13:25:27 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 16:37:30 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 17:32:35 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,17 @@ int		ft_ltobuffer(unsigned long n, unsigned char *buf)
 	if (i > -1)
 		memset(buf + len, 0, i);
 	return ((int)(len));
+}
+
+void	print_actions(t_philo *philo, t_param *param, char *message, size_t len)
+{
+	int ret;
+
+	ret = 0;
+	memset(philo->buf, 0, MESSAGE_LEN);
+	ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
+	philo->buf[ret] = ' ';
+	ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
+	ft_memmove(philo->buf + ret, message, len);
+	write(1, philo->buf, ret + len);
 }

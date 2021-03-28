@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 13:27:57 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/28 16:53:13 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 17:40:34 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		check_for_death(t_philo *philo, t_param *param)
 		ret = ft_ltobuffer(get_relative_ms(param->begin_tv), philo->buf);
 		philo->buf[ret] = ' ';
 		ret += ft_ltobuffer(philo->id, philo->buf + ret + 1) + 1;
-		ft_memmove(philo->buf + ret, DIE_MSG, DIE_MSG_LEN);  
+		ft_memmove(philo->buf + ret, DIE_MSG, DIE_MSG_LEN);
 		write(1, philo->buf, ret + DIE_MSG_LEN);
 		return (1);
 	}
