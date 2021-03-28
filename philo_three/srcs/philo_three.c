@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:39:05 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/28 00:36:11 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 16:50:36 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,24 @@ int		init_philo_one(t_param *param)
 	param->death_sem = NULL;
 	param->forks = NULL;
 	param->fed_sem = NULL;
-//	param->prompt_sem = NULL;
+	param->prompt_sem = NULL;
 	sem_unlink(DEATH_NAME);
 	sem_unlink(FED_NAME);
 	sem_unlink(FORKS_NAME);
-//	sem_unlink(PROMPT_NAME);
+	sem_unlink(PROMPT_NAME);
 	param->forks = sem_open(FORKS_NAME, O_CREAT | O_EXCL, S_IRWXU,
 							param->number_of_philosophers);
 	i = 0;
 	param->fed_sem = sem_open(FED_NAME, O_CREAT | O_EXCL, S_IRWXU, 0);
 	param->death_sem = sem_open(DEATH_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
-//	param->prompt_sem = sem_open(DEATH_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
+	param->prompt_sem = sem_open(PROMPT_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (param->death_sem == SEM_FAILED || param->fed_sem == SEM_FAILED
-		|| param->forks == SEM_FAILED)
+		|| param->forks == SEM_FAILED || param->prompt_sem == SEM_FAILED)
 		return (1);
 	param->forks_nb = param->number_of_philosophers;
 	param->fed_philo_n = 0;
 	param->death = 0;
+	param->prompt_allow = 1;
 	param->pids = (pid_t *)calloc(param->number_of_philosophers,
 										sizeof(pid_t));
 	if (!param->pids)

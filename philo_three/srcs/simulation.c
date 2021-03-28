@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/28 00:47:44 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 17:21:50 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	*supervise(void *atypic_philo)
 	
 	philo = (t_philo *)atypic_philo;
 	param = philo->sim_param;
+//	printf("supervise param : %p\n", param);
 	while (1)
 	{
 		if (check_for_death(philo, param))
@@ -31,8 +32,10 @@ void	*supervise(void *atypic_philo)
 	while (i < param->number_of_philosophers)
 	{
 		sem_post(param->fed_sem);
+		sem_post(param->forks);
 		i++;
 	}
+	return (NULL);
 	exit(0);
 }
 
@@ -44,8 +47,9 @@ void	*live(void *atypic_philo)
 
 	philo = (t_philo *)atypic_philo;
 	param = philo->sim_param;
+//	printf("live param : %p\n", param);
 	if (philo->id % 2)
-		ft_msleep(10, param);
+		ft_msleep(SIM_SHIFT_MS, param);
 	pthread_create(&handler, NULL, supervise, philo);
 	while (!check_death_bool(param))
 	{
@@ -53,8 +57,12 @@ void	*live(void *atypic_philo)
 		philo->state++;
 		if (philo->state == STATE_NB)
 			philo->state = 0;
-		usleep(100);
+//		printf("death bool : %d\n", param->death);
 	}
+//	printf("cc\n");
+	pthread_join(handler, NULL);
+	destroy_semaphores(param);
+	exit(0);
 	return (NULL);
 }
 

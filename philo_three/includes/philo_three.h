@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/26 14:25:41 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/27 23:52:45 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 16:48:56 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define MESSAGE_LEN	50
 # define TIME_FACTOR	1000
 # define SLEEP_STEP_US	500
+# define SIM_SHIFT_MS	10
 # define FORKS_NAME		"/forks_sem"
 # define FED_NAME		"/fed_sem"
 # define DEATH_NAME		"/death_sem"
@@ -72,6 +73,7 @@ typedef struct		s_param
 	sem_t			*death_sem;
 	int				forks_nb;
 	int				death;
+	int				prompt_allow;
 	pid_t			*pids;
 }					t_param;
 
