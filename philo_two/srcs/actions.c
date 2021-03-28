@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:35:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 00:35:25 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 18:22:43 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	philo_eat(t_philo *philo, t_param *param)
 				philo->id);
 	}
 	gettimeofday(&philo->last_dinner_tv, NULL);
-	ft_msleep(param->time_to_eat, param);
+	if (ft_msleep(param->time_to_eat, param))
+		return ;
 	philo->meals_n++;
 	if (param->number_of_times_each_philosophers_must_eat > 0
 		&& philo->meals_n == param->number_of_times_each_philosophers_must_eat)

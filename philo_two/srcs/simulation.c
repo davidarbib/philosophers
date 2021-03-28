@@ -6,7 +6,7 @@
 /*   By: darbib <darbib@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 10:26:21 by darbib            #+#    #+#             */
-/*   Updated: 2021/03/25 00:36:21 by darbib           ###   ########.fr       */
+/*   Updated: 2021/03/28 19:27:58 by darbib           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int		check_for_death(t_philo *philo, t_param *param)
 		set_death_bool(param);
 		printf("%ld %d died\n", get_relative_ms(param->begin_tv),
 				philo->id);
+		sem_post(param->forks);
+		sem_post(param->forks);
 		return (1);
 	}
 	sem_wait(param->fed_sem);
